@@ -1,8 +1,9 @@
- /*			VERSION 20170921
+ /*			VERSION 20170923
 TODO:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	GIMP - 2nd car design with .psd 1st car as template/reference
 	Natural decellaration, maybe subtract approximately 0.1 from carSpeed every frame or so
 	Better interface for time, maybe white font on green grass background, remove console.log for logging time
+	WASD steering
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
