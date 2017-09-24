@@ -1,9 +1,8 @@
- /*			VERSION 20170923
+ /*			VERSION 20170924
 TODO:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	GIMP - 2nd car design with .psd 1st car as template/reference
 	Natural decellaration, maybe subtract approximately 0.1 from carSpeed every frame or so
 	Better interface for time, maybe white font on green grass background, remove console.log for logging time
-	WASD steering
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
@@ -117,43 +116,101 @@ function calculateMousePos(event){
 }
 
 function handleKeyDown(event){
-	if(event.keyCode == 32 || event.keyCode == 13){			//SPACE or ENTER
-		if(showStartScreen){
-			setup();
-			showStartScreen = false;
-		}else if(showPauseScreen){
-			showPauseScreen = false;
-		}else if(showEndScreen){
-			setup();
+	if(showPauseScreen||showStartScreen||showEndScreen){
+		switch(event.keyCode){
+			case 32:			//SPACE or ENTER
+				if(showStartScreen){
+					setup();
+					showStartScreen = false;
+				}else if(showPauseScreen){
+					showPauseScreen = false;
+				}else if(showEndScreen){
+					setup();
+				}
+				break;
+			case 13:
+				if(showStartScreen){
+						setup();
+						showStartScreen = false;
+					}else if(showPauseScreen){
+						showPauseScreen = false;
+					}else if(showEndScreen){
+						setup();
+					}
+				break;
 		}
 	}
-	if(showStartScreen == false && showEndScreen == false){		//game is running
-		if(event.keyCode == 27){								//esc
-			showPauseScreen = true;
-		}if(event.keyCode == 37){								//left
-			keyHeldTurnLeft = true;
-		}if(event.keyCode == 38){								//up
-			keyHeldGas = true;
-			carMoved = true;
-		}if(event.keyCode == 39){								//right
-			keyHeldTurnRight = true;
-		}if(event.keyCode == 40){								//down
-			keyHeldBrakes = true;
+	if(!showStartScreen && !showEndScreen){		//game is running
+		switch(event.keyCode){
+			case 27:												//esc
+				showPauseScreen = true;
+				break;
+			case 37: 												//left arrow  	
+				keyHeldTurnLeft = true;
+				carMoved = true;
+				break;	
+			case 38: 												//up arrow
+				keyHeldGas = true;
+				carMoved = true;
+				break;
+			case 39: 												//right arrow
+				keyHeldTurnRight = true;
+				carMoved = true;
+				break;
+			case 40: 												//down arrow
+				keyHeldBrakes = true;
+				carMoved = true;
+				break;
+			case 87: 												//w	
+				keyHeldGas = true;
+				carMoved = true;
+				break;	
+			case 65: 												//a
+				keyHeldTurnLeft = true;
+				carMoved= true;
+				break;
+			case 83: 												//s
+				keyHeldBrakes = true;
+				carMoved = true;
+				break;
+			case 68: 												//d
+				keyHeldTurnRight = true;
+				carMoved = true;
+				break;
 		}
 	}
 }
 
 function handleKeyUp(event){
 	if(showStartScreen == false && showEndScreen == false){		//game is running
-		}if(event.keyCode == 37){								//left
-			keyHeldTurnLeft = false;
-		}if(event.keyCode == 38){								//up
-			keyHeldGas = false;
-		}if(event.keyCode == 39){								//right
-			keyHeldTurnRight = false;
-		}if(event.keyCode == 40){								//down
-			keyHeldBrakes = false;
+		switch(event.keyCode){
+			case 37:
+				keyHeldTurnLeft = false;					//left arrow
+				break;
+			case 38:
+				keyHeldGas = false;							//up arrow
+				break;
+			case 39:
+				keyHeldTurnRight = false;					//right arrow
+				break;
+			case 40:
+				keyHeldBrakes = false;						//down arrow
+				break;
+
+			case 87:
+				keyHeldGas = false;									//w
+				break;
+			case 65:
+				keyHeldTurnLeft = false;							//a
+				break;
+			case 83:
+				keyHeldBrakes = false;								//s
+				break;
+			case 68:
+				keyHeldTurnRight = false;							//d
+				break;
 		}
+	}
 }
 
 window.onload = function(){
