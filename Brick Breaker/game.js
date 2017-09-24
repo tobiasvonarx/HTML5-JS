@@ -103,26 +103,39 @@ function calculateMousePos(event){
 }
 */
 function handleKeyPress(event){
-	if(event.keyCode == 32 || event.keyCode == 13){			//SPACE or ENTER
-		if(showStartScreen){
-			setup();
-			showStartScreen = false;
-		}else if(showPauseScreen){
-			showPauseScreen = false;
-		}else if(showEndScreen){
-			setup();
-		}
+	switch(event.keyCode){
+		case 32: 							//space
+			if(showStartScreen){
+				setup();
+				showStartScreen = false;
+			}else if(showPauseScreen){
+				showPauseScreen = false;
+			}else if(showEndScreen){
+				setup();
+			}
+			break;
+		case 13: 							//return, enter
+			if(showStartScreen){
+				setup();
+				showStartScreen = false;
+			}else if(showPauseScreen){
+				showPauseScreen = false;
+			}else if(showEndScreen){
+				setup();
+			}
+			break;
 	}
-
 	if(!showStartScreen && !showEndScreen && !showPauseScreen){
-		if(event.keyCode == 27){		//esc
-			showPauseScreen = true;
-		}
-		if(event.keyCode == 37){		//Left arrow
-			leftArrowHeld = true;
-		}
-		if(event.keyCode == 39){
-			rightArrowHeld = true;
+		switch(event.keyCode){
+			case 27: 								//Esc
+				showPauseScreen = true;
+				break;
+			case 37: 								//left arrow
+				leftArrowHeld = true;
+				break;
+			case 39: 								//right arrow
+				rightArrowHeld = true;
+				break;
 		}
 	}
 }
@@ -130,6 +143,17 @@ function handleKeyPress(event){
 function handleKeyUp(event){
 
 	if(!showStartScreen && !showEndScreen && !showPauseScreen){
+		switch(event.keyCode){
+			case 37: 			//left arrow
+				leftArrowHeld = false;
+				break;
+			case 39: 			//right arrow
+				rightArrowHeld = false;
+				break;
+		}
+
+
+
 		if(event.keyCode == 37){		//Left arrow
 			leftArrowHeld = false;
 		}
