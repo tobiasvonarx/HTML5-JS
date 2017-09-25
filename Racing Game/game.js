@@ -1,7 +1,7 @@
  /*			VERSION 20170924
 TODO:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	GIMP - 2nd car design with .psd 1st car as template/reference
-	Natural decellaration, maybe subtract approximately 0.1 from carSpeed every frame or so
+	Natural deceleration, maybe subtract approximately 0.1 from carSpeed every frame or so
 	Better interface for time, maybe white font on green grass background, remove console.log for logging time
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
@@ -43,6 +43,12 @@ var trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                  1, 5, 5, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
                  1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
                  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+const trackTile = 0;
+const grassTile = 1;
+const waymarkTile = 4;
+const antiCheatTile = 5;
+const firstPlayerStartTile = 2;
+const secondPlayerStartTile = 3;
 
 var showStartScreen;
 var showPauseScreen;
@@ -61,6 +67,11 @@ var keyHeldBrakes;
 var keyHeldTurnLeft;
 var keyHeldTurnRight;
 
+const carGasRate = 0.06;
+const carBrakeRate = 0.12;
+const carTurnRate = 0.05;
+const speedDecay = 0.993;
+
 function carReset(){
 	carAng = Math.radians(270);
 
@@ -72,7 +83,7 @@ function carReset(){
 			var arrayIndex = rowColToArrayIndex(eachCol, eachRow);	//make a variable to map all tracks to an index
 
 
-			if(trackGrid[arrayIndex]==2){							//spawnpoint blue car
+			if(trackGrid[arrayIndex]==firstPlayerStartTile){							//spawn-point blue car
 				carX = (eachCol * trackSize) + (trackSize/2);
 				carY = (eachRow * trackSize) + (trackSize/2);
 			}
@@ -222,7 +233,7 @@ window.onload = function(){
 	//run logic at ~fps
 	setInterval(function(){moveEverything();drawEverything();}, 1000/framesPerSecond);
 
-	//keyobard event detection
+	//keyboard event detection
 	canvas.addEventListener('mousemove', calculateMousePos);
 	window.addEventListener('keydown', handleKeyDown);
 	window.addEventListener('keyup', handleKeyUp);
@@ -241,39 +252,42 @@ function carMove(){
 	}
 	console.log('Time: ',Math.floor(time));
 
-
 	if(keyHeldGas){			//executed every frame the up arrow is held
-		carSpeed += 0.04;
+		carSpeed += carGasRate;
 	}
 	if(keyHeldBrakes){
-		carSpeed -= 0.07;
+		carSpeed -= carBrakeRate;
 	}
 	if(keyHeldTurnLeft){
-		carAng -= 0.05;
+		carAng -= carTurnRate;
 	}
 	if(keyHeldTurnRight){
-		carAng += 0.05;
+		carAng += carTurnRate;
 	}
 
-		carX += Math.cos(carAng) * carSpeed;						//move car
-		carY += Math.sin(carAng) * carSpeed;
+	if(!keyHeldGas){
+		carSpeed *= speedDecay;
+	}
+
+	carX += Math.cos(carAng) * carSpeed;						//move car
+	carY += Math.sin(carAng) * carSpeed;
 }
 
-function isTrackAtColRow(col, row) {
+function isWallAtColRow(col, row) {
 	if(col >= 0 && col < trackCols &&			//no bugs
 		row >= 0 && row < trackRows) {
 		var trackIndexUnderCoord = rowColToArrayIndex(col, row);
 
-		if(waymarkReached && (trackGrid[trackIndexUnderCoord]==2||trackGrid[trackIndexUnderCoord]==3)){		//if waymark reached and finish line crossed
+		if(waymarkReached && (trackGrid[trackIndexUnderCoord]==firstPlayerStartTile||trackGrid[trackIndexUnderCoord]==secondPlayerStartTile)){		//if waymark reached and finish line crossed
 			finishLineReached = true;
-		} else if(trackGrid[trackIndexUnderCoord]==4){ 														//if waymark reached
+		} else if(trackGrid[trackIndexUnderCoord]==waymarkTile){ 														//if waymark reached
 			waymarkReached = true;
 		}
 
 		if(!waymarkReached){
-			return (trackGrid[trackIndexUnderCoord]==1||trackGrid[trackIndexUnderCoord]==5);
+			return (trackGrid[trackIndexUnderCoord]==grassTile||trackGrid[trackIndexUnderCoord]==antiCheatTile);
 		} else {											//waymark reached
-			return(trackGrid[trackIndexUnderCoord]==1);
+			return(trackGrid[trackIndexUnderCoord]==grassTile);
 		}
 	} else {
 		return false;
@@ -288,9 +302,11 @@ function carTrackHandling(){
 	if(carTrackCol >= 0 && carTrackCol < trackCols &&			//no bugs
 		carTrackRow >= 0 && carTrackRow < trackRows) {
 
-		if(isTrackAtColRow(carTrackCol, carTrackRow)) {			//wall
-			carSpeed *= -1
-			carSpeed /= 2
+		if(isWallAtColRow(carTrackCol, carTrackRow)) {			//wall
+
+			carX -= Math.cos(carAng) * carSpeed;
+			carY -= Math.sin(carAng) * carSpeed;
+			carSpeed *= -0.5;
 		}
 	}
 }
@@ -315,18 +331,18 @@ function drawTracks(){
 			
 			if(trackGrid[arrayIndex]==0){					//wall
 				colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');
-			}else if(trackGrid[arrayIndex]==1){				//grass
+			}else if(trackGrid[arrayIndex]==grassTile){				//grass
 				colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'green');
-			}else if(trackGrid[arrayIndex]==2 || trackGrid[arrayIndex]==3){				//flag
+			}else if(trackGrid[arrayIndex]==firstPlayerStartTile || trackGrid[arrayIndex]==secondPlayerStartTile){				//flag
 				for(var i=0;i<trackSize;i+=trackSize/5){			//row
 					for(var j=0;j<trackSize;j+=trackSize/5){		//column
 						colorRect(trackSize*eachCol+i, trackSize*eachRow+j, trackSize/5, trackSize/5, finishLineColors[1]);
 						finishLineColors.reverse();					//change colors
 					}
 				}
-			}else if(trackGrid[arrayIndex]==4){
+			}else if(trackGrid[arrayIndex]==waymarkTile){
 				colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');	//waymark (to prevent cheating)
-			}else if(trackGrid[arrayIndex]==5){
+			}else if(trackGrid[arrayIndex]==antiCheatTile){
 				colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');	//blocking the player to go behind the finish/starting line at beginning
 			}
 		}
