@@ -306,9 +306,9 @@ function ballPaddleHandling(){
 }
 
 function paddleMove(){
-	if(leftArrowHeld){
+	if(leftArrowHeld && paddleX + paddleLength/2 >= 0){			//prevent paddle going off screen
 		paddleX -= 4;
-	}else if(rightArrowHeld){
+	}else if(rightArrowHeld && paddleX + paddleLength/2 <= canvas.width){
 		paddleX += 4;
 	}
 }
