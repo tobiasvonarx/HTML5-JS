@@ -1,7 +1,6 @@
  /*			VERSION 20170924
 TODO:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	Better interface for time, maybe white font on green grass background, remove console.log for logging time
-	Organsise code into different files
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
@@ -11,10 +10,9 @@ var canvasContext = canvas.getContext('2d');
 var blueCarPic = document.createElement('img');
 var blueCarPicLoaded = false;
 
-var showStartScreen;
+var showStartScreen = true;			//sets to true on reload
 var showPauseScreen;
 var showEndScreen;
-var tracksLeft;
 
 var time;
 var carMoved;
@@ -23,7 +21,7 @@ var waymarkReached;
 
 
 function setup(){
-	showStartScreen = true;
+	//showStartScreen = true;		does not activate start screen on every other reset than start, see variable assignment above
 	showPauseScreen = false;
 	showEndScreen = false;
 
@@ -76,7 +74,7 @@ function drawEverything(){
 	colorRect(0, 0, canvas.width, canvas.height, 'black');
 
 	//game
-	if(!showStartScreen && !showPauseScreen && !showEndScreen){
+	if(!showStartScreen && !showPauseScreen){
 		//tracks
 		drawTracks();
 
@@ -100,4 +98,32 @@ function drawEverything(){
 		drawText('Press SPACE to continue playing', canvas.width/2, canvas.height/4*3, 'center', 'white', '20px arial')
 	}
 
+	//end screen
+	if(showEndScreen){
+		var resultatMeinung = [];
+		var t = Math.floor(time);
+		if(t<=20){
+			resultatMeinung.push('ausserordentlich gut');
+			resultatMeinung.push('bombenmässig');
+			resultatMeinung.push('mega nice');
+			resultatMeinung.push('profimässig');
+		} else if(t>20 && t<24){
+			resultatMeinung.push('sehr tropfig (\u00A9Lenny)');
+			resultatMeinung.push('gut');
+			resultatMeinung.push('nice');
+		} else if(t>23 && t<27){
+			resultatMeinung.push('ok');
+			resultatMeinung.push('akzeptabel');
+		} else{					//Math.floor(time)>25
+			resultatMeinung.push('SCHEISSE');
+			resultatMeinung.push('*facepalm* smh (\u00A9Maxi)');
+		}
+		var randChoice = resultatMeinung[Math.floor(Math.random() * resultatMeinung.length)];
+
+		alert('Dein Resultat von '+Math.floor(time)+' sekunden ist '+randChoice);
+		
+		setup();
+
+
+	}
 }
