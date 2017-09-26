@@ -1,8 +1,7 @@
  /*			VERSION 20170924
 TODO:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	GIMP - 2nd car design with .psd 1st car as template/reference
-	Natural deceleration, maybe subtract approximately 0.1 from carSpeed every frame or so
 	Better interface for time, maybe white font on green grass background, remove console.log for logging time
+	Organsise code into different files
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
@@ -70,7 +69,7 @@ var keyHeldTurnRight;
 const carGasRate = 0.06;
 const carBrakeRate = 0.12;
 const carTurnRate = 0.05;
-const speedDecay = 0.993;
+const speedDecay = 0.993;		//percent
 
 function carReset(){
 	carAng = Math.radians(270);
@@ -250,7 +249,6 @@ function carMove(){
 	if(carMoved && !finishLineReached){
 		time += 0.0333333;
 	}
-	console.log('Time: ',Math.floor(time));
 
 	if(keyHeldGas){			//executed every frame the up arrow is held
 		carSpeed += carGasRate;
@@ -329,7 +327,7 @@ function drawTracks(){
 
 			var arrayIndex = rowColToArrayIndex(eachCol, eachRow);	//make a variable to map all tracks to an index
 			
-			if(trackGrid[arrayIndex]==0){					//wall
+			if(trackGrid[arrayIndex]==trackTile){					//track
 				colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');
 			}else if(trackGrid[arrayIndex]==grassTile){				//grass
 				colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'green');
@@ -357,8 +355,11 @@ function drawEverything(){
 	if(!showStartScreen && !showPauseScreen && !showEndScreen){
 		//tracks
 		drawTracks();
+
+		//time
+		drawText('Time: '+Math.floor(time), 400, 200, 'center', 'white');
+
 		//car
-		//colorCircle(carX, carY, carRadius, 'red');
 		if(blueCarPicLoaded){
 			drawPicWithRotation(blueCarPic, carX, carY, carAng);
 		}
