@@ -5,30 +5,28 @@ function calculateMousePos(event){
 	mouseY = event.clientY - rect.top - root.scrollTop;
 }
 
-function handleKeyDown(event){
-	if(showPauseScreen||showStartScreen||showEndScreen){
-		switch(event.keyCode){
-			case 32:			//SPACE or ENTER
-				if(showStartScreen){
+function handleKeyDown(event){	
+	switch(event.keyCode){
+		case 32:			//SPACE or ENTER
+			if(showStartScreen){
+				setup();
+				showStartScreen = false;
+			}else if(showPauseScreen){
+				showPauseScreen = false;
+			}//else if(showEndScreen){
+			//	setup();
+			//}
+			break;
+		case 13:
+			if(showStartScreen){
 					setup();
 					showStartScreen = false;
 				}else if(showPauseScreen){
 					showPauseScreen = false;
-				}else if(showEndScreen){
-					setup();
-				}
-				break;
-			case 13:
-				if(showStartScreen){
-						setup();
-						showStartScreen = false;
-					}else if(showPauseScreen){
-						showPauseScreen = false;
-					}else if(showEndScreen){
-						setup();
-					}
-				break;
-		}
+				}//else if(showEndScreen){
+				//	setup();
+				//}
+			break;
 	}
 	if(!showStartScreen && !showEndScreen){		//game is running
 		switch(event.keyCode){
@@ -66,6 +64,9 @@ function handleKeyDown(event){
 			case 68: 												//d
 				keyHeldTurnRight = true;
 				carMoved = true;
+				break;
+			case 82: 												//r
+				setup();
 				break;
 		}
 	}
