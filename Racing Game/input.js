@@ -1,10 +1,3 @@
-function calculateMousePos(event){
-	var rect = canvas.getBoundingClientRect();
-	var root = document.documentElement;
-	mouseX = event.clientX - rect.left - root.scrollLeft;
-	mouseY = event.clientY - rect.top - root.scrollTop;
-}
-
 function handleKeyDown(event){	
 	switch(event.keyCode){
 		case 32:			//SPACE or ENTER

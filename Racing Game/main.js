@@ -49,7 +49,6 @@ window.onload = function(){
 	setInterval(function(){moveEverything();drawEverything();}, 1000/framesPerSecond);
 
 	//keyboard event detection
-	canvas.addEventListener('mousemove', calculateMousePos);
 	window.addEventListener('keydown', handleKeyDown);
 	window.addEventListener('keyup', handleKeyUp);
 
