@@ -33,6 +33,7 @@ function isWallAtColRow(col, row) {
 
                 if(waymarkReached && (trackGrid[trackIndexUnderCoord]==firstPlayerStartTile||trackGrid[trackIndexUnderCoord]==secondPlayerStartTile)){          //if waymark reached and finish line crossed
                         finishLineReached = true;
+                        showEndScreen = true;
                 } else if(trackGrid[trackIndexUnderCoord]==waymarkTile){                                                                                                                //if waymark reached
                         waymarkReached = true;
                 }
@@ -61,7 +62,7 @@ function carTrackHandling(){
 
                         carX -= Math.cos(carAng) * carSpeed;
                         carY -= Math.sin(carAng) * carSpeed;
-                        carSpeed *= -0.5;
+                        carSpeed *= -0.6;
                 }
         }
 }
