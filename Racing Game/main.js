@@ -7,9 +7,6 @@ TODO:---------------------------------------------------------------------------
 var canvas = document.getElementById('gameCanvas');
 var canvasContext = canvas.getContext('2d');
 
-var blueCarPic = document.createElement('img');
-var blueCarPicLoaded = false;
-
 var showStartScreen = true;			//sets to true on reload
 var showPauseScreen;
 var showEndScreen;
@@ -52,12 +49,7 @@ window.onload = function(){
 	window.addEventListener('keydown', handleKeyDown);
 	window.addEventListener('keyup', handleKeyUp);
 
-	blueCarPic.onload = function(){
-		blueCarPicLoaded = true;
-	};
-
-	blueCarPic.src = 'blueCarPic.png';
-
+	carImageLoad();
 }
 
 function moveEverything(){
