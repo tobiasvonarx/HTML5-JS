@@ -14,10 +14,10 @@ var keyHeldBrakes;
 var keyHeldTurnLeft;
 var keyHeldTurnRight;
 
-const carGasRate = 0.06;
-const carBrakeRate = 0.12;
+const carGasRate = 0.05;
+const carBrakeRate = 0.10;
 const carTurnRate = 0.05;
-const speedDecay = 0.993;		//percent
+const speedDecay = 0.988;		//percent
 
 function carImageLoad(){
 	blueCarPic.onload = function(){

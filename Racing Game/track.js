@@ -18,12 +18,20 @@ const trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                  1, 5, 5, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
                  1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
                  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-const trackTile = 0;
-const grassTile = 1;
+const roadTile = 0;
+const wallTile = 1;
 const waymarkTile = 4;
 const antiCheatTile = 5;
 const firstPlayerStartTile = 2;
 const secondPlayerStartTile = 3;
+
+var trackWall = document.createElement('img');
+var trackRoad = document.createElement('img');
+
+function trackImageLoad(){
+	trackWall.src = 'track_wall.png';
+	trackRoad.src = 'track_road.png';
+}
 
 
 function isWallAtColRow(col, row) {
@@ -39,9 +47,9 @@ function isWallAtColRow(col, row) {
                 }
 
                 if(!waymarkReached){
-                        return (trackGrid[trackIndexUnderCoord]==grassTile||trackGrid[trackIndexUnderCoord]==antiCheatTile);
+                        return (trackGrid[trackIndexUnderCoord]==wallTile||trackGrid[trackIndexUnderCoord]==antiCheatTile);
                 } else {                                                                                        //waymark reached
-                        return(trackGrid[trackIndexUnderCoord]==grassTile);
+                        return(trackGrid[trackIndexUnderCoord]==wallTile);
                 }
         } else {
                 return false;
@@ -78,10 +86,12 @@ function drawTracks(){
 
                         var arrayIndex = rowColToArrayIndex(eachCol, eachRow);  //make a variable to map all tracks to an index
                         
-                        if(trackGrid[arrayIndex]==trackTile){                                   //track
-                                colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');
-                        }else if(trackGrid[arrayIndex]==grassTile){                             //grass
-                                colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'green');
+                        if(trackGrid[arrayIndex]==roadTile){                                   //track
+                        		canvasContext.drawImage(trackRoad, trackSize*eachCol, trackSize*eachRow);
+                                //colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');
+                        }else if(trackGrid[arrayIndex]==wallTile){                             //grass
+                           		canvasContext.drawImage(trackWall, trackSize*eachCol, trackSize*eachRow);
+                                //colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'green');
                         }else if(trackGrid[arrayIndex]==firstPlayerStartTile || trackGrid[arrayIndex]==secondPlayerStartTile){                          //flag
                                 for(var i=0;i<trackSize;i+=trackSize/5){                        //row
                                         for(var j=0;j<trackSize;j+=trackSize/5){                //column
@@ -90,9 +100,11 @@ function drawTracks(){
                                         }
                                 }
                         }else if(trackGrid[arrayIndex]==waymarkTile){
-                                colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');        //waymark (to prevent cheating)
+                        	canvasContext.drawImage(trackRoad, trackSize*eachCol, trackSize*eachRow);
+                            //colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');        //waymark (to prevent cheating)
                         }else if(trackGrid[arrayIndex]==antiCheatTile){
-                                colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');        //blocking the player to go behind the finish/starting line at beginning
+                        	canvasContext.drawImage(trackRoad, trackSize*eachCol, trackSize*eachRow);
+                            //colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');        //blocking the player to go behind the finish/starting line at beginning
                         }
                 }
         }

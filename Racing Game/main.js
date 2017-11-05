@@ -37,6 +37,8 @@ function setup(){
 }
 
 window.onload = function(){
+	console.log('Hello World');
+
 	var framesPerSecond = 30;
 
 	//setup variables
@@ -50,6 +52,7 @@ window.onload = function(){
 	window.addEventListener('keyup', handleKeyUp);
 
 	carImageLoad();
+	trackImageLoad();
 }
 
 function moveEverything(){
@@ -70,7 +73,7 @@ function drawEverything(){
 		drawTracks();
 
 		//time
-		drawText('Time: '+Math.floor(time), 400, 200, 'center', 'white');
+		//drawText('Time: '+Math.floor(time), 400, 200, 'center', 'white');
 
 		//car
 		if(blueCarPicLoaded){
@@ -94,19 +97,13 @@ function drawEverything(){
 		var resultatMeinung = [];
 		var t = Math.floor(time);
 		if(t<=20){
-			resultatMeinung.push('ausserordentlich gut');
-			resultatMeinung.push('bombenmässig');
-			resultatMeinung.push('mega nice');
 			resultatMeinung.push('profimässig');
 		} else if(t>20 && t<24){
 			resultatMeinung.push('sehr tropfig (\u00A9Lenny)');
-			resultatMeinung.push('gut');
 			resultatMeinung.push('nice');
-		} else if(t>23 && t<27){
-			resultatMeinung.push('ok');
+		} else if(t>23 && t<25){
 			resultatMeinung.push('akzeptabel');
 		} else{					//Math.floor(time)>25
-			resultatMeinung.push('SCHEISSE');
 			resultatMeinung.push('*facepalm* smh (\u00A9Maxi)');
 		}
 		var randChoice = resultatMeinung[Math.floor(Math.random() * resultatMeinung.length)];
