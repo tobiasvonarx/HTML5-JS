@@ -1,6 +1,8 @@
  /*			VERSION 20170924
 TODO:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+-2nd car graphics
+-2nd car implementation
+-2 skins per car, w/ brake lights and without
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
@@ -64,9 +66,6 @@ function moveEverything(){
 }
 
 function drawEverything(){
-	//black canvas background
-	colorRect(0, 0, canvas.width, canvas.height, 'black');
-
 	//game
 	if(!showStartScreen && !showPauseScreen){
 		//tracks
@@ -79,6 +78,10 @@ function drawEverything(){
 		if(blueCarPicLoaded){
 			drawPicWithRotation(blueCarPic, carX, carY, carAng);
 		}
+	} else {
+		//black canvas background
+		colorRect(0, 0, canvas.width, canvas.height, 'black');
+
 	}
 
 	//start screen
