@@ -1,3 +1,9 @@
+function setupInput(){
+	//keyboard event detection
+	window.addEventListener('keydown', handleKeyDown);
+	window.addEventListener('keyup', handleKeyUp);
+}
+
 function handleKeyDown(event){	
 	switch(event.keyCode){
 		case 32:			//SPACE or ENTER
