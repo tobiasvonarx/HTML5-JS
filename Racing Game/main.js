@@ -40,7 +40,14 @@ function setup(){
 
 window.onload = function(){
 	console.log('Hello World');
+	//setup input event listeners
+	setupInput();
 
+	//load images
+	loadImages();	
+}
+
+function initialiseGame(){			//gets called when images finish loading
 	var framesPerSecond = 30;
 
 	//setup variables
@@ -48,12 +55,6 @@ window.onload = function(){
 
 	//run logic at ~fps
 	setInterval(function(){moveEverything();drawEverything();}, 1000/framesPerSecond);
-
-	//keyboard event detection
-	window.addEventListener('keydown', handleKeyDown);
-	window.addEventListener('keyup', handleKeyUp);
-
-	loadImages();
 }
 
 function moveEverything(){
@@ -70,13 +71,12 @@ function drawEverything(){
 		//tracks
 		drawTracks();
 
+		//car
+		drawCar();
+
 		//time
 		//drawText('Time: '+Math.floor(time), 400, 200, 'center', 'white');
 
-		//car
-		if(blueCarPicLoaded){
-			drawPicWithRotation(blueCarPic, carX, carY, carAng);
-		}
 	} else {
 		//black canvas background
 		colorRect(0, 0, canvas.width, canvas.height, 'black');

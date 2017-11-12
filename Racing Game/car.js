@@ -11,10 +11,10 @@ var keyHeldBrakes;
 var keyHeldTurnLeft;
 var keyHeldTurnRight;
 
-const carGasRate = 0.052;
-const carBrakeRate = 0.11;
-const carTurnRate = 0.042;
-const speedDecay = 0.98;		//percent
+const carGasRate = 0.05;
+const carBrakeRate = 0.10;
+const carTurnRate = 0.05;
+const speedDecay = 0.988;		//percent
 
 
 function carReset(){
@@ -61,4 +61,8 @@ function carMove(){
 
 	carX += Math.cos(carAng) * carSpeed;						//move car
 	carY += Math.sin(carAng) * carSpeed;
+}
+
+function drawCar(){
+	drawPicWithRotation(blueCarPic, carX, carY, carAng);
 }
