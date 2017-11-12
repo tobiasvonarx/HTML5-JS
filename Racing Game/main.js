@@ -53,8 +53,7 @@ window.onload = function(){
 	window.addEventListener('keydown', handleKeyDown);
 	window.addEventListener('keyup', handleKeyUp);
 
-	carImageLoad();
-	trackImageLoad();
+	loadImages();
 }
 
 function moveEverything(){

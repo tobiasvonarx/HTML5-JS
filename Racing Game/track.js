@@ -25,14 +25,6 @@ const antiCheatTile = 5;
 const firstPlayerStartTile = 2;
 const secondPlayerStartTile = 3;
 
-var trackWall = document.createElement('img');
-var trackRoad = document.createElement('img');
-
-function trackImageLoad(){
-	trackWall.src = 'track_wall.png';
-	trackRoad.src = 'track_road.png';
-}
-
 
 function isWallAtColRow(col, row) {
         if(col >= 0 && col < trackCols &&                       //no bugs

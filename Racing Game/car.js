@@ -4,9 +4,6 @@ var carAng;
 var carSpeed;
 const carRadius = 5;
 
-//car image
-var blueCarPic = document.createElement('img');
-var blueCarPicLoaded = false;
 
 //booleans for more natural steering
 var keyHeldGas;
@@ -18,14 +15,6 @@ const carGasRate = 0.052;
 const carBrakeRate = 0.11;
 const carTurnRate = 0.042;
 const speedDecay = 0.98;		//percent
-
-function carImageLoad(){
-	blueCarPic.onload = function(){
-		blueCarPicLoaded = true;
-	};
-
-	blueCarPic.src = 'blueCarPic.png';
-}
 
 
 function carReset(){
