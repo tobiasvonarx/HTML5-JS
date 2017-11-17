@@ -43,6 +43,8 @@ window.onload = function(){
 	//setup input event listeners
 	setupInput();
 
+	loadingScreen();
+
 	//load images
 	loadImages();	
 }
@@ -55,6 +57,12 @@ function initialiseGame(){			//gets called when images finish loading
 
 	//run logic at ~fps
 	setInterval(function(){moveEverything();drawEverything();}, 1000/framesPerSecond);
+}
+
+function loadingScreen(){
+	//loading screen
+	colorRect(0, 0, canvas.width, canvas.height, 'black');
+	drawText('Loading...', canvas.width/2, canvas.height/2, 'center', 'white', '30px verdana');
 }
 
 function moveEverything(){
