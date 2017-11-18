@@ -7,19 +7,21 @@ const trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                  1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
                  1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
                  1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
-                 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
-                 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1,
-                 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-                 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-                 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-                 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-                 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-                 1, 2, 3, 1, 4, 4, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 7, 1, 1, 1, 6, 6, 6, 6, 1, 1, 1, 1, 7, 0, 0, 1,
+                 1, 0, 0, 1, 1, 0, 0, 1, 1, 6, 6, 1, 0, 0, 0, 0, 1, 0, 0, 1,
+                 1, 0, 0, 1, 0, 0, 0, 0, 1, 6, 6, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+                 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 7, 0, 0, 1, 0, 0, 1,
+                 1, 0, 0, 1, 0, 0, 7, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+                 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 7, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+                 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 7, 0, 0, 1,
+                 1, 2, 3, 7, 4, 4, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
                  1, 5, 5, 5, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
                  1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
-                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+                 1, 1, 1, 1, 1, 1, 1, 1, 1, 6, 6, 6, 6, 6, 1, 1, 1, 1, 1, 1];
 const roadTile = 0;
 const wallTile = 1;
+const treeTile = 6;
+const flagTile = 7;
 const waymarkTile = 4;
 const antiCheatTile = 5;
 const firstPlayerStartTile = 2;
@@ -78,25 +80,20 @@ function drawTracks(){
 
                         var arrayIndex = rowColToArrayIndex(eachCol, eachRow);  //make a variable to map all tracks to an index
                         
-                        if(trackGrid[arrayIndex]==roadTile){                                   //track
+                        if(trackGrid[arrayIndex]==roadTile){                                                                        //track
                         		canvasContext.drawImage(trackRoad, trackSize*eachCol, trackSize*eachRow);
-                                //colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');
-                        }else if(trackGrid[arrayIndex]==wallTile){                             //grass
+                        }else if(trackGrid[arrayIndex]==wallTile){                                                                  //grass
                            		canvasContext.drawImage(trackWall, trackSize*eachCol, trackSize*eachRow);
-                                //colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'green');
-                        }else if(trackGrid[arrayIndex]==firstPlayerStartTile || trackGrid[arrayIndex]==secondPlayerStartTile){                          //flag
-                                for(var i=0;i<trackSize;i+=trackSize/5){                        //row
-                                        for(var j=0;j<trackSize;j+=trackSize/5){                //column
-                                                colorRect(trackSize*eachCol+i, trackSize*eachRow+j, trackSize/5, trackSize/5, finishLineColors[1]);
-                                                finishLineColors.reverse();                                     //change colors
-                                        }
-                                }
+                        }else if(trackGrid[arrayIndex]==firstPlayerStartTile || trackGrid[arrayIndex]==secondPlayerStartTile){      //goal
+                                canvasContext.drawImage(trackGoal, trackSize*eachCol, trackSize*eachRow);
                         }else if(trackGrid[arrayIndex]==waymarkTile){
                         	canvasContext.drawImage(trackRoad, trackSize*eachCol, trackSize*eachRow);
-                            //colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');        //waymark (to prevent cheating)
                         }else if(trackGrid[arrayIndex]==antiCheatTile){
                         	canvasContext.drawImage(trackRoad, trackSize*eachCol, trackSize*eachRow);
-                            //colorRect(trackSize*eachCol, trackSize*eachRow, trackSize-trackGap, trackSize-trackGap, 'gray');        //blocking the player to go behind the finish/starting line at beginning
+                        }else if(trackGrid[arrayIndex]==treeTile){                                                                  //trees
+                            canvasContext.drawImage(trackTree, trackSize*eachCol, trackSize*eachRow);
+                        }else if(trackGrid[arrayIndex]==flagTile){                                                                  //flag
+                            canvasContext.drawImage(trackFlag, trackSize*eachCol, trackSize*eachRow);
                         }
                 }
         }

@@ -1,6 +1,9 @@
 var blueCarPic = document.createElement('img');
 var trackWall = document.createElement('img');
 var trackRoad = document.createElement('img');
+var trackGoal = document.createElement('img');
+var trackTree = document.createElement('img');
+var trackFlag = document.createElement('img');
 
 var picsToLoad;	//set automatically based length of imageData array in loadImages()
 
@@ -23,7 +26,10 @@ function loadImages(){
 	var imageData = [									//data structure for storing neccessary image information
 		{var: trackWall,file:'track_wall.png'},			//object literal (=hashtable or =dictionary)
 		{var: trackRoad,file:'track_road.png'},
-		{var: blueCarPic,file:'blueCarPic.png'}
+		{var: blueCarPic,file:'blueCarPic.png'},
+		{var: trackGoal,file: 'track_goal.png'},
+		{var: trackTree,file: 'track_tree.png'},
+		{var: trackFlag,file: 'track_flag.png'},
 	];
 
 	picsToLoad = imageData.length;
