@@ -16,7 +16,7 @@ function checkLoadingComplete(){		//if all pictures have loaded game gets starte
 function beginLoadingImage(imgVar, filePath){
 	//picsToLoad++;
 	imgVar.onload = checkLoadingComplete();
-	imgVar.src = filePath;
+	imgVar.src = 'images/'+filePath;
 }
 
 function loadImages(){
