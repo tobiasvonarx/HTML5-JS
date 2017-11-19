@@ -118,7 +118,7 @@ function drawEverything(){
 		}
 		var randChoice = resultatMeinung[Math.floor(Math.random() * resultatMeinung.length)];
 
-		alert('Dein Resultat von '+Math.floor(time)+' sekunden ist '+randChoice);
+		alert('Dein Resultat von '+time.toFixed(2)+' sekunden ist '+randChoice);
 		
 		setup();
 
