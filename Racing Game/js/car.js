@@ -15,6 +15,7 @@ const carGasRate = 0.05;
 const carBrakeRate = 0.10;
 const carTurnRate = 0.05;
 const speedDecay = 0.988;		//percent
+const minSpeedToTurn = 0.5;
 
 
 function carReset(){
@@ -48,13 +49,14 @@ function carMove(){
 	if(keyHeldBrakes){
 		carSpeed -= carBrakeRate;
 	}
-	if(keyHeldTurnLeft){
+	if(Math.abs(carSpeed)>minSpeedToTurn){
+		if(keyHeldTurnLeft){
 		carAng -= carTurnRate;
+		}
+		if(keyHeldTurnRight){
+			carAng += carTurnRate;
+		}
 	}
-	if(keyHeldTurnRight){
-		carAng += carTurnRate;
-	}
-
 	if(!keyHeldGas){
 		carSpeed *= speedDecay;
 	}
