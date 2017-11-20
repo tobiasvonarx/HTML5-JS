@@ -81,31 +81,11 @@ function drawTracks(){
     for(var eachRow=0;eachRow<trackRows;eachRow++) {                        //two for loops to iterate through drawing the cols and rows
         for(var eachCol=0;eachCol<trackCols;eachCol++) {                //eachRow and eachCol are the loop variables
 
-            var arrayIndex = rowColToArrayIndex(eachCol, eachRow);  //make a variable to map all tracks to an index
-            var tile = trackGrid[arrayIndex];
-            var useImage;
-            
-            switch(tile){
-                case roadTile:
-                case waymarkTile:
-                case antiCheatTile:
-                    useImage = trackRoad;
-                    break;
-                case wallTile:
-                    useImage = trackWall;
-                    break;
-                case firstPlayerStartTile:
-                case secondPlayerStartTile:
-                    useImage = trackGoal;
-                    break;
-                case treeTile:
-                    useImage = trackTree;
-                    break;
-                case flagTile:
-                    useImage = trackFlag;
-                    break;
-            }
-            canvasContext.drawImage(useImage, trackSize*eachCol, trackSize*eachRow);
+            var arrayIndex = rowColToArrayIndex(eachCol, eachRow);      //make a variable to map all tracks to an index
+            var tileKind = trackGrid[arrayIndex];
+            var useImage = trackPics[tileKind];
+
+            canvasContext.drawImage(useImage, trackSize*eachCol, trackSize*eachRow);        //draw
         }
     }
 }
