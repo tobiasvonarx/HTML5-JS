@@ -2,7 +2,7 @@ function drawPicWithRotation(img, x, y, angle){
 	canvasContext.save();																	//save
 	canvasContext.translate(x, y);															//https://www.udemy.com/how-to-program-games/learn/v4/t/lecture/3440548?start=60
 	canvasContext.rotate(angle);
-	canvasContext.drawImage(img, -blueCarPic.width/2, -blueCarPic.height/2);
+	canvasContext.drawImage(img, -img.width/2, -img.height/2);
 	canvasContext.restore();																//restore to last save
 }
 
