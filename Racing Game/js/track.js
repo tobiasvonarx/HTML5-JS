@@ -3,25 +3,26 @@ const trackCols = 20;
 const trackRows = 15;
 const trackGap = 0;
 const finishLineColors = ['white', 'black'];
-const trackGrid = [ 6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 6,
-                    6, 6, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-                    6, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-                    1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
-                    1, 0, 0, 0, 7, 1, 1, 6, 6, 6, 6, 6, 1, 1, 1, 1, 7, 0, 0, 1,
-                    1, 0, 0, 1, 1, 0, 0, 1, 6, 6, 6, 1, 0, 0, 0, 0, 1, 0, 0, 1,
+const trackGrid = [ 8, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 6,
+                    6, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    8, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 6, 1, 1, 1, 1, 1, 0, 0, 0, 1,
+                    1, 0, 0, 0, 7, 1, 8, 1, 1, 6, 8, 6, 1, 1, 6, 1, 7, 0, 0, 1,
+                    1, 0, 0, 1, 1, 0, 0, 1, 6, 8, 6, 1, 0, 0, 0, 0, 1, 0, 0, 1,
                     1, 0, 0, 1, 0, 0, 0, 0, 1, 6, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-                    1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 7, 0, 0, 1, 0, 0, 1,
-                    1, 0, 0, 1, 0, 0, 7, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+                    8, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 7, 0, 0, 1, 0, 0, 1,
+                    6, 0, 0, 1, 0, 0, 7, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
                     1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 7, 0, 0, 1, 0, 0, 1, 0, 0, 1,
                     1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 7, 0, 0, 1,
-                    1, 2, 3, 7, 4, 4, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
-                    1, 5, 5, 5, 0, 0, 1, 6, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
-                    1, 0, 0, 0, 0, 0, 1, 6, 6, 1, 1, 1, 6, 6, 1, 0, 0, 0, 0, 1,
-                    6, 1, 1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 6, 6, 1, 1, 1, 1, 6];
+                    1, 2, 3, 7, 4, 4, 1, 6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+                    1, 5, 5, 5, 0, 0, 8, 8, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 1, 8, 6, 1, 6, 1, 8, 6, 1, 0, 0, 0, 0, 1,
+                    1, 1, 1, 1, 1, 1, 8, 6, 8, 1, 1, 1, 6, 8, 1, 1, 1, 1, 8, 6];
 
 const roadTile = 0;
 const wallTile = 1;
 const treeTile = 6;
+const treeTile2 = 8;
 const flagTile = 7;
 const waymarkTile = 4;
 const antiCheatTile = 5;
@@ -78,14 +79,21 @@ function rowColToArrayIndex(col, row){
 }
 
 function drawTracks(){
-    for(var eachRow=0;eachRow<trackRows;eachRow++) {                        //two for loops to iterate through drawing the cols and rows
-        for(var eachCol=0;eachCol<trackCols;eachCol++) {                //eachRow and eachCol are the loop variables
+    var arrayIndex = 0;
+    var drawTileX = 0;
+    var drawTileY = 0;
 
-            var arrayIndex = rowColToArrayIndex(eachCol, eachRow);      //make a variable to map all tracks to an index
+    for(var eachRow=0;eachRow<trackRows;eachRow++) {                                        //two for loops to iterate through drawing the cols and rows
+
+        for(var eachCol=0;eachCol<trackCols;eachCol++) {                                    //eachRow and eachCol are the loop variables
             var tileKind = trackGrid[arrayIndex];
             var useImage = trackPics[tileKind];
+            canvasContext.drawImage(useImage, drawTileX, drawTileY);        //draw
 
-            canvasContext.drawImage(useImage, trackSize*eachCol, trackSize*eachRow);        //draw
+            drawTileX += trackSize;
+            arrayIndex++;
         }
+        drawTileY += trackSize;
+        drawTileX = 0;
     }
 }
