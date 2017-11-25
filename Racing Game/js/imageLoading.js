@@ -1,4 +1,16 @@
-var blueCarPic = document.createElement('img');
+//INSTRUCTION TO LOADING IMAGES:
+
+//car pic:
+//1. create img element at top
+//2. reference var and file path in imageData array as object literal
+
+//track pic:
+//1. instantiate the new tile to corresponding number in track.js
+//2. add object literal with file path and the trackType (holding the corresponding number) to imageData array
+//3. mention the assigned integer in trackGrid to draw it someplace
+
+var blueCarPicBrake = document.createElement('img');
+var blueCarPicIdle = document.createElement('img');
 
 var trackPics = []
 
@@ -20,15 +32,17 @@ function beginLoadingImage(imgVar, filePath){
 }
 
 function loadImages(){
-	var imageData = [									//data structure for storing neccessary image information
-		{var: blueCarPic,file:'blueCarPic.png'},
-		{trackType: wallTile,file:'track_wall.png'},			//object literal (=hashtable or =dictionary)
+	var imageData = [												//data structure for storing neccessary image information
+		{var: blueCarPicBrake,file:'blueCarPicBrake.png'},
+		{var: blueCarPicIdle,file:'blueCarPicIdle.png'},
+		{trackType: wallTile,file:'track_wall.png'},				//object literal (=hashtable or =dictionary)
 		{trackType: roadTile,file:'track_road.png'},
 		{trackType: waymarkTile,file:'track_road.png'},
 		{trackType: antiCheatTile,file:'track_road.png'},
 		{trackType: firstPlayerStartTile,file: 'track_goal.png'},
 		{trackType: secondPlayerStartTile,file: 'track_goal.png'},
 		{trackType: treeTile,file: 'track_tree.png'},
+		{trackType: treeTile2,file: 'track_tree2.png'},
 		{trackType: flagTile,file: 'track_flag.png'}
 	];
 
