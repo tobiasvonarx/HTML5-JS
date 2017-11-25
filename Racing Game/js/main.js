@@ -2,7 +2,7 @@
 TODO:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -2nd car implementation
 -2 skins per car, w/ brake lights and without
--UPDATE COMMENTS ON IMAGE LOADING & DRAWING (explain array indexing reference)
+(-Highscore system and highest speed ever system in pix/frame derived from carSpeed)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
