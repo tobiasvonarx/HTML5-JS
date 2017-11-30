@@ -17,8 +17,6 @@ const carTurnRate = 0.05;
 const speedDecay = 0.988;		//percent
 const minSpeedToTurn = 0.5;
 
-var previousSpeed;
-
 function carReset(){
 	carAng = Math.radians(270);
 	carSpeed = 0;
@@ -68,10 +66,9 @@ function carMove(){
 
 function drawCar(){
 	//var previousSpeed = carSpeed;
-	if (previousSpeed*speedDecay>carSpeed){									//if car is braking
-		drawPicWithRotation(blueCarPicBrake, carX, carY, carAng);
+	if (keyHeldBrakes){											//if car is braking
+		drawPicWithRotation(blueCarPicBrake, carX, carY, carAng);	
 	} else {
 		drawPicWithRotation(blueCarPicIdle, carX, carY, carAng);
 	}
-	previousSpeed = carSpeed;
 }
