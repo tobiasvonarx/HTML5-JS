@@ -56,18 +56,18 @@ function isObstacleAtColRow(col, row) {
 
 
 
-function carTrackHandling(){
-    var carTrackCol = Math.floor(carX / trackSize);
-    var carTrackRow = Math.floor(carY / trackSize);
+function carTrackHandling(car){
+    var carTrackCol = Math.floor(car.x / trackSize);
+    var carTrackRow = Math.floor(car.y / trackSize);
     var trackIndexUnderCar = rowColToArrayIndex(carTrackCol, carTrackRow);
 
     if(carTrackCol >= 0 && carTrackCol < trackCols &&                       //no bugs
         carTrackRow >= 0 && carTrackRow < trackRows) {
 
         if(isObstacleAtColRow(carTrackCol, carTrackRow)) {                  //wall
-            carX -= Math.cos(carAng) * carSpeed;
-            carY -= Math.sin(carAng) * carSpeed;
-            carSpeed *= -0.6;
+            car.x -= Math.cos(car.ang) * car.speed;
+            car.y -= Math.sin(car.ang) * car.speed;
+            car.speed *= -0.5;
         }
     }
 }
