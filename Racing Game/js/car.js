@@ -28,7 +28,7 @@ function carReset(){
 			var arrayIndex = rowColToArrayIndex(eachCol, eachRow);	//make a variable to map all tracks to an index
 
 
-			if(trackGrid[arrayIndex]==firstPlayerStartTile){							//spawn-point blue car
+			if(trackGrid[arrayIndex]==firstPlayerStartTile){		//spawn-point blue car
 				carX = (eachCol * trackSize) + (trackSize/2);
 				carY = (eachRow * trackSize) + (trackSize/2);
 			}
@@ -42,7 +42,7 @@ function carMove(){
 		time += 0.0333333;
 	}
 
-	if(keyHeldGas){			//executed every frame the up arrow is held
+	if(keyHeldGas){												//executed every frame the up arrow is held
 		carSpeed += carGasRate;
 	}
 	if(keyHeldBrakes){
