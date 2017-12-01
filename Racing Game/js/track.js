@@ -2,7 +2,6 @@ const trackSize = 40;
 const trackCols = 20;
 const trackRows = 15;
 const trackGap = 0;
-const finishLineColors = ['white', 'black'];
 const trackGrid = [ 8, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 6,
                     6, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
                     8, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
