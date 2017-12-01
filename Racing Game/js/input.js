@@ -27,6 +27,7 @@ function handleKeyDown(event){
 				//}
 			break;
 	}
+
 	if(!showStartScreen && !showEndScreen){		//game is running
 		switch(event.keyCode){
 			case 27:												//esc
