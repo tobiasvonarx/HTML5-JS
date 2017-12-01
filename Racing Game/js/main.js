@@ -3,6 +3,7 @@ TODO:---------------------------------------------------------------------------
 -2nd car implementation
 -2 skins per car, w/ brake lights and without
 (-Highscore system and highest speed ever system in pix/frame derived from carSpeed)
+-IMPORTANT: FIX INPUT KEYS FOR CAR CONTROL!!!
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
@@ -13,8 +14,11 @@ var showStartScreen = true;			//sets to true on reload
 var showPauseScreen;
 var showEndScreen;
 
+var blueCar = new carClass();
+var greenCar = new carClass();
+
 var time;
-var carMoved;
+var carMoved;						//update
 var finishLineReached;
 var waymarkReached;
 
@@ -35,7 +39,8 @@ function setup(){
 	waymarkReached = false;
 
 	//set cars position to start
-	carReset();
+	blueCar.reset(firstPlayerStartTile,blueCarPicBrake,blueCarPicIdle);
+	greenCar.reset(secondPlayerStartTile,greenCarPicBrake,greenCarPicIdle);
 }
 
 window.onload = function(){
@@ -62,13 +67,14 @@ function initialiseGame(){			//gets called when images finish loading
 function loadingScreen(){
 	//loading screen
 	colorRect(0, 0, canvas.width, canvas.height, 'black');
+	drawText('Music by Schlengnon', 15, 15, 'begin', 'white', '5px verdana');
 	drawText('Loading...', canvas.width/2, canvas.height/2, 'center', 'white', '30px verdana');
 }
 
 function moveEverything(){
 	if(!showStartScreen && !showPauseScreen && !showEndScreen){
-		carMove();
-		carTrackHandling();
+		blueCar.move();
+		greenCar.move();
 	}
 
 }
@@ -80,7 +86,8 @@ function drawEverything(){
 		drawTracks();
 
 		//car
-		drawCar();
+		blueCar.draw();
+		greenCar.draw();
 
 		//time
 		//drawText('Time: '+Math.floor(time), 400, 200, 'center', 'white');
