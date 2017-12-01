@@ -11,6 +11,8 @@
 
 var blueCarPicBrake = document.createElement('img');
 var blueCarPicIdle = document.createElement('img');
+var greenCarPicBrake = document.createElement('img');
+var greenCarPicIdle = document.createElement('img');
 
 var trackPics = []
 
@@ -35,6 +37,8 @@ function loadImages(){
 	var imageData = [												//data structure for storing neccessary image information
 		{var: blueCarPicBrake,file:'blueCarPicBrake.png'},
 		{var: blueCarPicIdle,file:'blueCarPicIdle.png'},
+		{var: greenCarPicBrake,file:'greenCarPicBrake.png'},
+		{var: greenCarPicIdle,file:'greenCarPicIdle.png'},
 		{trackType: wallTile,file:'track_wall.png'},				//object literal (=hashtable or =dictionary)
 		{trackType: roadTile,file:'track_road.png'},
 		{trackType: waymarkTile,file:'track_road.png'},
