@@ -11,6 +11,9 @@ function setupInput(){
 	//keyboard event detection
 	window.addEventListener('keydown', handleKeyDown);
 	window.addEventListener('keyup', handleKeyUp);
+	
+	blueCar.setupKeys(keyW,keyS,keyA,keyD);
+	greenCar.setupKeys(keyUpArrow,keyDownArrow,keyLeftArrow,keyRightArrow);
 }
 
 function keyInput(car, setTo, event){

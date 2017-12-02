@@ -22,12 +22,15 @@ function setup(){
 	finishLineReached = false;
 	waymarkReached = false;
 
-	blueCar.setupKeys(keyW,keyS,keyA,keyD);
-	greenCar.setupKeys(keyUpArrow,keyDownArrow,keyLeftArrow,keyRightArrow);
+	loadLevel(levelOne);
+}
+
+function loadLevel(level){
+	trackGrid = level.slice();		//need to copy the array by value instead of referncing different memory of the same object
 
 	//set cars position to start
-	blueCar.reset(firstPlayerStartTile,blueCarPicBrake,blueCarPicIdle);
-	greenCar.reset(secondPlayerStartTile,greenCarPicBrake,greenCarPicIdle);
+	blueCar.reset(firstPlayerStartTile,blueCarPicBrake,blueCarPicIdle,'blaues Auto');
+	greenCar.reset(secondPlayerStartTile,greenCarPicBrake,greenCarPicIdle,'grünes Auto');
 }
 
 window.onload = function(){
@@ -103,10 +106,8 @@ function drawEverything(){
 
 		if(blueCar.finishLineReached){
 			winnerCar = blueCar;
-			winnerCarName = 'blaue Auto';
 		} else if(greenCar.finishLineReached){
 			winnerCar = greenCar;
-			winnerCarName = 'grüne Auto';
 		}
 
 		/*
@@ -128,7 +129,7 @@ function drawEverything(){
 		//alert('Dein Resultat von '+time.toFixed(2)+' sekunden ist '+randChoice);
 		*/
 
-		alert('Das '+winnerCarName+' hat mit einem Resultat von '+winnerCar.time.toFixed(2)+' gewonnen!');
+		alert('Das '+winnerCar.name+' hat mit einem Resultat von '+winnerCar.time.toFixed(2)+' gewonnen!');
 
 		setup();
 
