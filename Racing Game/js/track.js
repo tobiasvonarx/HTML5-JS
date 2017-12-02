@@ -29,22 +29,22 @@ const firstPlayerStartTile = 2;
 const secondPlayerStartTile = 3;
 
 
-function isObstacleAtColRow(col, row) {
+function isObstacleAtColRow(car, col, row) {
     if(col >= 0 && col < trackCols &&                       //no bugs
             row >= 0 && row < trackRows) {
             var trackIndexUnderCoord = rowColToArrayIndex(col, row);
             var tile = trackGrid[trackIndexUnderCoord];
 
             //anticheat system
-            if(waymarkReached && (tile==firstPlayerStartTile||tile==secondPlayerStartTile)){          //if waymark reached and finish line crossed
-                    finishLineReached = true;
+            if(car.waymarkReached && (tile==firstPlayerStartTile||tile==secondPlayerStartTile)){          //if waymark reached and finish line crossed
+                    car.finishLineReached = true;
                     showEndScreen = true;
             } else if(tile==waymarkTile){                                                                                        //if waymark reached
-                    waymarkReached = true;
+                    car.waymarkReached = true;
             }
 
             //check if car hit obstacle
-            if(!waymarkReached){
+            if(!car.waymarkReached){
                     return (tile==wallTile||tile==antiCheatTile||tile==treeTile||tile==flagTile);
             } else {                                                                                                            //waymark reached
                     return(tile==wallTile||tile==treeTile||tile==flagTile);
@@ -64,7 +64,7 @@ function carTrackHandling(car){
     if(carTrackCol >= 0 && carTrackCol < trackCols &&                       //no bugs
         carTrackRow >= 0 && carTrackRow < trackRows) {
 
-        if(isObstacleAtColRow(carTrackCol, carTrackRow)) {                  //wall
+        if(isObstacleAtColRow(car, carTrackCol, carTrackRow)) {                  //wall
             car.x -= Math.cos(car.ang) * car.speed;
             car.y -= Math.sin(car.ang) * car.speed;
             car.speed *= -0.5;

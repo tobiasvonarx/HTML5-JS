@@ -1,10 +1,7 @@
- /*			VERSION 20170924
+ /*			VERSION 20171202
 TODO:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
--2nd car implementation
--2 skins per car, w/ brake lights and without
-(-Highscore system and highest speed ever system in pix/frame derived from carSpeed)
--IMPORTANT: FIX INPUT KEYS FOR CAR CONTROL!!!
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+(-Highscore system and highest speed ever system in unit pix/frame derived from carSpeed)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 var canvas = document.getElementById('gameCanvas');
@@ -17,26 +14,16 @@ var showEndScreen;
 var blueCar = new carClass();
 var greenCar = new carClass();
 
-var time;
-var carMoved;						//update
-var finishLineReached;
-var waymarkReached;
-
-
 function setup(){
 	//showStartScreen = true;		does not activate start screen on every other reset than start, see variable assignment above
 	showPauseScreen = false;
 	showEndScreen = false;
 
-	keyHeldGas = false;
-	keyHeldBrakes = false;
-	keyHeldTurnLeft = false;
-	keyHeldTurnRight = false;
-
-	time = 0;
-	carMoved = false;
 	finishLineReached = false;
 	waymarkReached = false;
+
+	blueCar.setupKeys(keyW,keyS,keyA,keyD);
+	greenCar.setupKeys(keyUpArrow,keyDownArrow,keyLeftArrow,keyRightArrow);
 
 	//set cars position to start
 	blueCar.reset(firstPlayerStartTile,blueCarPicBrake,blueCarPicIdle);
@@ -73,8 +60,8 @@ function loadingScreen(){
 
 function moveEverything(){
 	if(!showStartScreen && !showPauseScreen && !showEndScreen){
-		blueCar.move();
-		greenCar.move();
+		blueCar.move(greenCar);
+		greenCar.move(blueCar);
 	}
 
 }
@@ -111,24 +98,39 @@ function drawEverything(){
 
 	//end screen
 	if(showEndScreen){
+		var winnerCar; var winnerCarName;
+		//console.log(blueCar.time, greenCar.time);
+
+		if(blueCar.finishLineReached){
+			winnerCar = blueCar;
+			winnerCarName = 'blaue Auto';
+		} else if(greenCar.finishLineReached){
+			winnerCar = greenCar;
+			winnerCarName = 'grüne Auto';
+		}
+
+		/*
 		var resultatMeinung = [];
-		var t = Math.floor(time);
-		if(t<=20){
+		if(winnerCar.time<=20){
 			resultatMeinung.push('profimässig');
+			resultatMeinung.push('')
+			resultatMeinung.push('mlg wow');
 		} else if(t>20 && t<24){
 			resultatMeinung.push('sehr tropfig (\u00A9Lenny)');
 			resultatMeinung.push('nice');
 		} else if(t>23 && t<25){
-			resultatMeinung.push('akzeptabel');
+			resultatMeinung.push('oké');
 		} else{					//Math.floor(time)>25
 			resultatMeinung.push('*facepalm* smh (\u00A9Maxi)');
+			resultatMeinung.push('')
 		}
 		var randChoice = resultatMeinung[Math.floor(Math.random() * resultatMeinung.length)];
+		//alert('Dein Resultat von '+time.toFixed(2)+' sekunden ist '+randChoice);
+		*/
 
-		alert('Dein Resultat von '+time.toFixed(2)+' sekunden ist '+randChoice);
-		
+		alert('Das '+winnerCarName+' hat mit einem Resultat von '+winnerCar.time.toFixed(2)+' gewonnen!');
+
 		setup();
-
 
 	}
 }

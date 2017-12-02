@@ -1,10 +1,40 @@
+const keyW = 87;
+const keyA = 65;
+const keyS = 83;
+const keyD = 68;
+const keyLeftArrow = 37;
+const keyUpArrow = 38;
+const keyRightArrow = 39;
+const keyDownArrow = 40;
+
 function setupInput(){
 	//keyboard event detection
 	window.addEventListener('keydown', handleKeyDown);
 	window.addEventListener('keyup', handleKeyUp);
 }
 
-function handleKeyDown(event){	
+function keyInput(car, setTo, event){
+	if(!showStartScreen && !showEndScreen){		//game is running
+		switch(event.keyCode){
+			case car.controlKeyTurnLeft: 												//left arrow  	
+				car.keyHeldTurnLeft = setTo;
+				break;	
+			case car.controlKeyGas: 													//up arrow
+				car.keyHeldGas = setTo;
+				car.moved = true;
+				break;
+			case car.controlKeyTurnRight: 												//right arrow
+				car.keyHeldTurnRight = setTo;
+				break;
+			case car.controlKeyBrakes: 													//down arrow
+				car.keyHeldBrakes = setTo;
+				car.moved = true;
+				break;
+		}
+	}
+}
+
+function handleKeyDown(evt){	
 	switch(event.keyCode){
 		case 32:			//SPACE or ENTER
 			if(showStartScreen){
@@ -26,80 +56,23 @@ function handleKeyDown(event){
 				//	setup();
 				//}
 			break;
-	}
-
-	if(!showStartScreen && !showEndScreen){		//game is running
-		switch(event.keyCode){
-			case 27:												//esc
+		case 27: 				//esc
+			if(!showStartScreen && !showEndScreen){
 				showPauseScreen = true;
-				break;
-			case 37: 												//left arrow  	
-				keyHeldTurnLeft = true;
-				carMoved = true;
-				break;	
-			case 38: 												//up arrow
-				keyHeldGas = true;
-				carMoved = true;
-				break;
-			case 39: 												//right arrow
-				keyHeldTurnRight = true;
-				carMoved = true;
-				break;
-			case 40: 												//down arrow
-				keyHeldBrakes = true;
-				carMoved = true;
-				break;
-			case 87: 												//w	
-				keyHeldGas = true;
-				carMoved = true;
-				break;	
-			case 65: 												//a
-				keyHeldTurnLeft = true;
-				carMoved= true;
-				break;
-			case 83: 												//s
-				keyHeldBrakes = true;
-				carMoved = true;
-				break;
-			case 68: 												//d
-				keyHeldTurnRight = true;
-				carMoved = true;
-				break;
-			case 82: 												//r
+			}
+			break;
+		case 82: 				//r
+			if(!showStartScreen && !showEndScreen){
 				setup();
-				break;
-		}
+			}
+			break;
 	}
+	keyInput(blueCar,true,evt);
+	keyInput(greenCar,true,evt);
+
 }
 
-function handleKeyUp(event){
-	if(showStartScreen == false && showEndScreen == false){		//game is running
-		switch(event.keyCode){
-			case 37:
-				keyHeldTurnLeft = false;					//left arrow
-				break;
-			case 38:
-				keyHeldGas = false;							//up arrow
-				break;
-			case 39:
-				keyHeldTurnRight = false;					//right arrow
-				break;
-			case 40:
-				keyHeldBrakes = false;						//down arrow
-				break;
-
-			case 87:
-				keyHeldGas = false;									//w
-				break;
-			case 65:
-				keyHeldTurnLeft = false;							//a
-				break;
-			case 83:
-				keyHeldBrakes = false;								//s
-				break;
-			case 68:
-				keyHeldTurnRight = false;							//d
-				break;
-		}
-	}
+function handleKeyUp(evt){
+	keyInput(blueCar,false,evt);
+	keyInput(greenCar,false,evt);
 }
