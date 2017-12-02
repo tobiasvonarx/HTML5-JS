@@ -2,7 +2,7 @@ const carGasRate = 0.05;
 const carBrakeRate = 0.10;
 const carTurnRate = 0.05;
 const speedDecay = 0.988;		//percent
-const minSpeedToTurn = 0.5;
+const minSpeedToTurn = 0.3;
 
 function carClass(){
 	this.x;
@@ -26,6 +26,7 @@ function carClass(){
 
 	this.moved;
 	this.time;
+	this.name
 
 	this.finishLineReached;
 	this.waymarkReached;
@@ -37,7 +38,9 @@ function carClass(){
 		this.controlKeyTurnRight = keyTurnRight;
 	}
 
-	this.reset = function(startTile, carImageBrake, carImageIdle){
+	this.reset = function(startTile, carImageBrake, carImageIdle, name){
+		this.name = name
+
 		//booleans for steering
 		this.keyHeldGas = false;
 		this.keyHeldBrakes = false;
