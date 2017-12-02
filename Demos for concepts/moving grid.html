@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+</head>
+<body>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+  // variables to keep track of player shot position
+  var shotX = 75, shotY = 75;
+  const PLAYER_SHOT_SPEED = 20;
+  var shotIsActive = false;
+  
+  // variables to keep track of enemy shot position
+  var enemyShotX = 75, enemyShotY = 75;
+  const ENEMY_SHOT_SPEED = 12;
+  var enemyShotIsActive = false;
+  
+  // alien constants and variables
+  const ALIEN_W = 80;
+  const ALIEN_H = 35;
+  const ALIEN_SPACING_W = 30;
+  const ALIEN_SPACING_H = 10;
+  const ALIEN_COLS = 7;
+  const ALIEN_ROWS = 7;
+  var alienGrid = new Array(ALIEN_COLS * ALIEN_ROWS);
+  var aliensLeft; // will get set in resetAliens()
+
+  // variables related to the aliens moving as a group, depends on which are alive
+  var swarmOffsetX = 0;
+  var swarmOffsetY = 0;
+  var swarmMoveDir = 1;
+  var swarmLowPopulationSpeedBoost = 1.0;
+  var swarmGroupWidth = 0;
+  var swarmGroupLeftMargin = 0;
+  var swarmGroupLowest = 0;
+  const SWARM_ADVANCE_JUMP = 15;
+  const ALIEN_POPULATION_BOOST_THRESHOLD = 25; // fewer than this, they speed up
+  const ALIEN_BOOST_MULT = 0.4; // higher means faster when few aliens left
+
+  // player constants and variables
+  const PLAYER_WIDTH = 40;
+  const PLAYER_THICKNESS = 20;
+  const PLAYER_Y = 530;
+  var playerX = 400;
+  
+  // save the canvas for dimensions, and its 2d context for drawing to it
+  var canvas, canvasContext;
+  
+  function calculateMousePos(evt) {
+    var rect = canvas.getBoundingClientRect(), root = document.documentElement;
+
+    // account for the margins, canvas position on page, scroll amount, etc.
+    var mouseX = evt.clientX - rect.left - root.scrollLeft;
+    var mouseY = evt.clientY - rect.top - root.scrollTop;
+    return {
+      x: mouseX,
+      y: mouseY
+    };
+  }
+  
+  function alienTileToIndex(tileCol, tileRow) {
+    return (tileCol + ALIEN_COLS*tileRow);
+  }
+
+  function isAlienAtTileCoord(alienTileCol, alienTileRow) {
+    var alienIndex = alienTileToIndex(alienTileCol, alienTileRow);
+    return (alienGrid[alienIndex] == 1);
+  }
+  
+  function pixelOnAlienCheck(whatX,whatY) {
+    var shotPosInTileX = Math.floor(whatX-swarmOffsetX) % ALIEN_W;
+    var shotPosInTileY = Math.floor(whatY-swarmOffsetY) % ALIEN_H;
+    
+    // was tile within the gap? if so, it didn't hit anything
+    if(shotPosInTileX > ALIEN_W - ALIEN_SPACING_W ||
+       shotPosInTileY > ALIEN_H - ALIEN_SPACING_H) {
+       return false;
+    }
+
+    var tileCol = (whatX-swarmOffsetX) / ALIEN_W;
+    var tileRow = (whatY-swarmOffsetY) / ALIEN_H;
+    
+    // we'll use Math.floor to round down to the nearest whole number
+    tileCol = Math.floor( tileCol );
+    tileRow = Math.floor( tileRow );
+
+    // first check whether the shot is within any part of the alien wall
+    if(tileCol < 0 || tileCol >= ALIEN_COLS ||
+       tileRow < 0 || tileRow >= ALIEN_ROWS) {
+       return false; // bail out of function to avoid illegal array position usage
+    }
+    
+    var alienIndex = alienTileToIndex(tileCol, tileRow);
+
+    if(alienGrid[alienIndex] == 1) { // shot hit this alien
+      alienGrid[alienIndex] = 0;
+      aliensLeft--;
+      shotIsActive = false;
+      
+      if(aliensLeft == 0) {
+        resetGame();
+      } else {        
+        if(aliensLeft < ALIEN_POPULATION_BOOST_THRESHOLD) {
+          swarmLowPopulationSpeedBoost = 1.0+
+              (ALIEN_POPULATION_BOOST_THRESHOLD-aliensLeft)*ALIEN_BOOST_MULT;
+        }
+        
+        recomputeSwarmGroupWidth();
+      } // end of else
+    } // end of if shot hit alien
+  } // end of pixelOnAlienCheck
+  
+  // updates overall width of group, since that affects when it jumps down
+  function recomputeSwarmGroupWidth() {
+  
+    var rightMostCol = 0;
+    for(var eachRow = 0; eachRow < ALIEN_ROWS; eachRow++) { // for all rows...
+      // checking from the right edge inward, only care for first found
+      for (var eachCol = ALIEN_COLS-1; eachCol > rightMostCol ; eachCol--) {
+        var alienIndex = alienTileToIndex(eachCol, eachRow);
+        if(alienGrid[alienIndex] == 1) {
+          rightMostCol = eachCol;
+          break; // found one, quit check this row
+        }
+      }
+    }
+    // used to tell if group is crossing right edge of play area
+    swarmGroupWidth = (rightMostCol+1) * ALIEN_W - ALIEN_SPACING_W;
+    
+    var leftMostCol = ALIEN_COLS-1;
+    for(var eachRow = 0; eachRow < ALIEN_ROWS; eachRow++) { // for all rows...
+      // checking from the right edge inward, only care for first found
+      for (var eachCol = 0; eachCol < leftMostCol ; eachCol++) {
+        var alienIndex = alienTileToIndex(eachCol, eachRow);
+        if(alienGrid[alienIndex] == 1) {
+          leftMostCol = eachCol;
+          break; // found one, quit check this row
+        }
+      }
+    }
+    // used to tell if group is crossing left edge of play area
+    swarmGroupLeftMargin = leftMostCol * ALIEN_W;
+    
+    var bottomMostRow = 0;
+    for(var eachCol = 0; eachCol < ALIEN_COLS; eachCol++) { // for all cols...
+      // checking from the bottom edge upward, only care for highest found
+      for (var eachRow = ALIEN_ROWS-1; eachRow > bottomMostRow ; eachRow--) {
+        var alienIndex = alienTileToIndex(eachCol, eachRow);
+        if(alienGrid[alienIndex] == 1) {
+          bottomMostRow = eachRow;
+          break; // found one, quit check this row
+        }
+      }
+    }
+    // used to tell if group is crossing bottom edge of play area
+    swarmGroupLowest = (bottomMostRow+1) * ALIEN_H - ALIEN_SPACING_H;
+  }
+  
+  function resetAliens() {
+    aliensLeft = 0;
+    swarmLowPopulationSpeedBoost = 1.0;
+    swarmOffsetX = 0;
+    swarmOffsetY = 0;
+    swarmMoveDir = 1;
+
+    for(var eachRow = 0; eachRow < ALIEN_ROWS; eachRow++) {
+      for (var eachCol = 0; eachCol < ALIEN_COLS; eachCol++) {
+          var alienIndex = alienTileToIndex(eachCol, eachRow);
+          if(eachRow >= 2) { // only place aliens at or below margin line
+            alienGrid[alienIndex] = 1;
+            aliensLeft++;
+          } else { // placing 0's for margin along the top
+            alienGrid[alienIndex] = 0;
+          } // end no alien in this row
+          
+      } // end eachCol
+    } // end eachRow
+    
+    recomputeSwarmGroupWidth();
+  } // end resetAliens
+  
+  function resetGame() {
+    resetAliens();
+    shotReset();
+  }
+
+  function playerShootIfReloaded() {
+    if(shotIsActive == false) {
+      shotX = playerX + (PLAYER_WIDTH/2);
+      shotY = PLAYER_Y;
+      shotIsActive = true;
+    }
+  }
+  
+  function enemyInColAbovePlayerAttemptToFire() {
+    if(enemyShotIsActive) {
+      return; // shared enemy shot is still in use, will need to try again later
+    }
+  
+    // which column lines up with the player's center?
+    var tileCol = (playerX+(PLAYER_WIDTH/2)-swarmOffsetX) / ALIEN_W;
+    
+    // use Math.floor to round down to the nearest whole number
+    tileCol = Math.floor( tileCol );
+
+    if(tileCol < 0 || tileCol >= ALIEN_COLS) {
+       return;
+    }
+    
+    for (var eachRow = ALIEN_ROWS-1; eachRow >= 0 ; eachRow--) {
+      var alienIndex = alienTileToIndex(tileCol, eachRow);
+      if(alienGrid[alienIndex] == 1) {
+        enemyShotX = swarmOffsetX + tileCol * ALIEN_W + (ALIEN_W - ALIEN_SPACING_W)*0.5;
+        enemyShotY = swarmOffsetY + eachRow * ALIEN_H + (ALIEN_H - ALIEN_SPACING_H)*0.5;
+        enemyShotIsActive = true;
+        return; // lowest alien found, no need to keep searching
+      }
+    }
+  }
+  
+  function mousedownHandler(evt) {
+    playerShootIfReloaded();
+  }
+    
+  window.onload = function() {
+    canvas = document.getElementById('gameCanvas');
+    canvasContext = canvas.getContext('2d');
+    
+    // these next few lines set up our game logic and render to happen 30 times per second
+    var framesPerSecond = 30;
+    setInterval(function() {
+        moveEverything();
+        drawEverything();
+      }, 1000/framesPerSecond);
+      
+    canvas.addEventListener('mousedown', mousedownHandler);
+      
+    canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = calculateMousePos(evt);
+        playerX = mousePos.x - (PLAYER_WIDTH/2); // minus half player height to center
+      } );
+      
+    resetGame();
+  }
+  
+  function shotReset() {
+    shotIsActive = false; // nothing else about ball matters, blocks use of it
+    enemyShotIsActive = false;
+  }
+  
+  function playerShotCollisionsCheck() {
+    pixelOnAlienCheck(shotX, shotY);
+    if(shotY < 0) { // if shot has moved beyond the top edge
+      shotIsActive = false;
+    }
+  }
+  
+  function enemyShotCollisionsCheck() {
+    if(enemyShotY >= PLAYER_Y && enemyShotY <= PLAYER_Y + PLAYER_THICKNESS) { // vertically over player
+      if(enemyShotX > playerX && enemyShotX < playerX+PLAYER_WIDTH) { // horizontally too?
+        resetGame();
+      }
+    }
+    if(enemyShotY > canvas.height) { // if shot has moved beyond the bottom edge
+      enemyShotIsActive = false;
+    }
+  } // end of enemyShotCollisionsCheck()
+  
+  function moveAliens() {
+    swarmOffsetX += swarmMoveDir * swarmLowPopulationSpeedBoost;
+    if(swarmMoveDir > 0) { // rightward
+      if(swarmOffsetX + swarmGroupWidth > canvas.width) { // check right edge
+        swarmMoveDir = -1;
+        swarmOffsetY += SWARM_ADVANCE_JUMP;
+      }
+    }
+
+    if(swarmMoveDir < 0) { // leftward
+      if(swarmOffsetX + swarmGroupLeftMargin < 0) { // check left edge
+        swarmMoveDir = 1;
+        swarmOffsetY += SWARM_ADVANCE_JUMP;
+      }
+    }
+    
+    if(swarmOffsetY + swarmGroupLowest > canvas.height) {
+      resetGame();
+    }
+
+    if( pixelOnAlienCheck(playerX, PLAYER_Y) ) {
+      resetGame();
+    }
+  } // end of moveAliens function
+  
+  function moveShots() {
+    if(shotIsActive) {
+      shotY += -PLAYER_SHOT_SPEED;
+      playerShotCollisionsCheck();
+    }
+  
+    if(enemyShotIsActive) {    
+      enemyShotY += ENEMY_SHOT_SPEED;
+      enemyShotCollisionsCheck();
+    }
+  }
+  
+  function moveEverything() {
+    moveAliens();
+    enemyInColAbovePlayerAttemptToFire();
+    moveShots();
+  }
+  
+  function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
+    canvasContext.fillStyle = fillColor;
+    canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+  }
+  
+  function colorCircle(centerX, centerY, radius, fillColor) {
+    canvasContext.fillStyle = fillColor;
+    canvasContext.beginPath();
+    canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+    canvasContext.fill();
+  }
+  
+  function drawAliens() {
+    for(var eachCol=0; eachCol<ALIEN_COLS; eachCol++) { // in each column...
+      for(var eachRow=0; eachRow<ALIEN_ROWS; eachRow++) { // in each row within that col
+      
+        if( isAlienAtTileCoord(eachCol, eachRow) ) {
+          var alienLeftEdgeX = eachCol * ALIEN_W + swarmOffsetX;
+          var alienTopEdgeY = eachRow * ALIEN_H + swarmOffsetY;
+          colorRect(alienLeftEdgeX, alienTopEdgeY,
+                   ALIEN_W - ALIEN_SPACING_W,
+                   ALIEN_H - ALIEN_SPACING_H, 'green' );
+        } // end of isAlienAtTileCoord()
+      } // end of for eachRow
+    } // end of for eachCol
+  } // end of drawAliens()
+  
+  function drawShots() {
+    if(shotIsActive) {
+      colorRect(shotX-1, shotY-4,
+                   3, 12, 'white' );
+    }
+    if(enemyShotIsActive) {    
+      colorRect(enemyShotX-1, enemyShotY-4,
+                   2, 9, 'yellow' );
+    }
+  }
+  
+  function drawEverything() {
+    // clear the game view by filling it with black
+    colorRect(0, 0, canvas.width, canvas.height, 'black');
+
+    // draw a white rectangle to use as the left player's player
+    colorRect(playerX, PLAYER_Y, PLAYER_WIDTH, PLAYER_THICKNESS, 'white');
+    
+    drawShots();  
+    drawAliens();
+  }
+</script>
+
+</body>
+</html>

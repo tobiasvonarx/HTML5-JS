@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+</head>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+  var mouseX = 0;
+  var mouseY = 0;
+  var selectedIdx = -1;
+  var tileOverIdx = -1;
+  
+  const TILE_W = 75;
+  const TILE_H = 75;
+  const TILE_GAP = 1;
+  const TILE_COLS = 8;
+  const TILE_ROWS = 8;
+  var tileGrid =
+      [ 2, 4, 3, 5, 6, 3, 4, 2,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+       -1,-1,-1,-1,-1,-1,-1,-1,
+       -2,-4,-3,-5,-6,-3,-4,-2];
+  const NO_PIECE = 0;
+  const PAWN = 1;
+  const ROOK = 2;
+  const BISHOP = 3;
+  const KNIGHT = 4;
+  const KING = 5;
+  const QUEEN = 6;
+  
+  function initInput() {
+    document.addEventListener("mousemove", mousemoved);
+    document.addEventListener("mousedown", mouseclicked);
+  }
+
+  function mouseclicked(evt) {
+    if(tileOverIdx < 0 || tileOverIdx >= tileGrid.length) { // invalid or off board
+      return;
+    }
+
+    if(selectedIdx != -1) {
+      tileGrid[tileOverIdx] = tileGrid[selectedIdx]; // put the piece here (overwrite)
+      tileGrid[selectedIdx] = NO_PIECE; // clear the spot where it was sitting
+      selectedIdx = -1; // forget selection
+    } else if(tileGrid[tileOverIdx] != NO_PIECE ) {
+      selectedIdx = tileOverIdx;
+    }
+  }
+
+  function mousemoved(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var root = document.documentElement;
+
+    // account for the margins, canvas position on page, scroll amount, etc.
+    mouseX = evt.clientX - rect.left - root.scrollLeft;
+    mouseY = evt.clientY - rect.top - root.scrollTop;
+
+    var tileOverCol = Math.floor(mouseX / TILE_W);
+    var tileOverRow = Math.floor(mouseY / TILE_H);    
+    tileOverIdx = tileCoordToIndex(tileOverCol,tileOverRow);
+  }
+
+  var canvas, canvasContext;
+  
+  function tileCoordToIndex(tileCol, tileRow) {
+    return (tileCol + TILE_COLS*tileRow);
+  }
+  
+  window.onload = function() {
+    canvas = document.getElementById('gameCanvas');
+    canvasContext = canvas.getContext('2d');
+    
+    initInput();
+    
+    // these next few lines set up our game logic and render to happen 30 times per second
+    var framesPerSecond = 30;
+    setInterval(function() {
+        drawEverything();
+      }, 1000/framesPerSecond);
+
+    canvasContext.font="12px Arial";
+  }
+  
+  function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
+    canvasContext.fillStyle = fillColor;
+    canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+  }
+
+  function outlineRect(topLeftX, topLeftY, boxWidth, boxHeight, lineColor) {
+    canvasContext.beginPath();
+    canvasContext.strokeStyle = lineColor;
+    canvasContext.lineWidth = "3";
+    canvasContext.rect(topLeftX, topLeftY, boxWidth, boxHeight);
+    canvasContext.stroke();
+  }
+  
+  function drawTiles() {
+    for(var eachCol=0; eachCol<TILE_COLS; eachCol++) {
+      for(var eachRow=0; eachRow<TILE_ROWS; eachRow++) {
+        var tileLeftEdgeX = eachCol * TILE_W;
+        var tileTopEdgeY = eachRow * TILE_H;
+
+        if( (eachCol + eachRow) % 2 == 0 ) { // splitting even sums from odd
+          colorRect(tileLeftEdgeX, tileTopEdgeY,
+                   TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#888888' );
+        } else {
+          colorRect(tileLeftEdgeX, tileTopEdgeY,
+                   TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#aaaaaa' );
+        }
+
+        var idxHere = tileCoordToIndex(eachCol,eachRow);
+        var pieceHere = tileGrid[idxHere];
+
+        var pieceName = "";
+
+        if( pieceHere < 0 ) {
+          canvasContext.fillStyle = 'white';
+          pieceName = "Whi.";
+        } else if( pieceHere > 0 ) {
+          canvasContext.fillStyle = 'black';
+          pieceName = "Blk.";
+        } 
+
+        switch(Math.abs(pieceHere)) {
+          case NO_PIECE:
+            break;
+          case PAWN:
+            pieceName += "Pawn";
+            break;
+          case ROOK:
+            pieceName += "Rook";
+            break;
+          case BISHOP:
+            pieceName += "Bishop";
+            break;
+          case KNIGHT:
+            pieceName += "Knight";
+            break;
+          case KING:
+            pieceName += "King";
+            break;
+          case QUEEN:
+            pieceName += "Queen";
+            break;
+        }
+        
+        canvasContext.fillText(pieceName,
+                  tileLeftEdgeX+TILE_W/2, tileTopEdgeY+TILE_H/2);
+
+        // not a super efficient way to do this, but c'mon, it's a boardgame!
+        // based on exercises you've already done you could optimize this :)
+        if(tileOverIdx == idxHere) {
+          outlineRect(tileLeftEdgeX, tileTopEdgeY,
+                   TILE_W - TILE_GAP, TILE_H - TILE_GAP, 'green' );
+        }
+        if(selectedIdx == idxHere) {
+          // cutting extra margin from each edge so it won't overlap mouseover tile
+          outlineRect(tileLeftEdgeX+3, tileTopEdgeY+3,
+                   TILE_W - TILE_GAP-6, TILE_H - TILE_GAP-6, 'yellow' );
+        }
+      } // end of for eachRow
+    } // end of for eachCol
+  } // end of drawTiles()
+  
+  function drawEverything() {
+    colorRect(0, 0, canvas.width, canvas.height, 'black');
+
+    canvasContext.textAlign="center";
+    drawTiles();
+    
+    canvasContext.textAlign="left";
+    canvasContext.fillStyle = 'white';
+    var rightAreaX = TILE_W*TILE_COLS;
+    var lineSkip = 15;
+    var lineY = 20;
+    canvasContext.fillText("Click any piece to select",rightAreaX,lineY);
+    lineY += lineSkip;
+    canvasContext.fillText("Then click spot to move to",rightAreaX,lineY);
+    lineY += lineSkip;
+    canvasContext.fillText("Turns and legal moves not enforced.",rightAreaX,lineY);
+    lineY += lineSkip;
+    canvasContext.fillText("That'd be a good exercise, though!",rightAreaX,lineY);
+  }
+</script>
+
+</body>
+</html>
