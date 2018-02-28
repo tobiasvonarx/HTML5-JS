@@ -31,9 +31,6 @@ function drawFractal(sideLength) {
     drawFractal(newLength);
   }
 }
- 
-
-
 
 canvasContext.beginPath();            //draw fractal
 drawFractal(598);
