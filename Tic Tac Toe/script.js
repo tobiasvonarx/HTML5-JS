@@ -62,18 +62,20 @@ function gameCompleted(id) {
 	for (let i=0; i<25; i++) {
 		//BOTTOM LEFT DIAGONALS
 		let leftDiagonalA = i+cellCountX-1;
-		let leftDiagonalB = i+2*cellCountX-2;
+		let leftDiagonalB = leftDiagonalA+cellCountX-1;
+		let leftDiagonalC = leftDiagonalB+cellCountX-1;
 		//console.log(cell, leftDiagonalA, leftDiagonalB);
 
-		if (origBoard[i]==origBoard[leftDiagonalA]&&origBoard[i]==origBoard[leftDiagonalB]) {
+		if (origBoard[i]==origBoard[leftDiagonalA]&&origBoard[i]==origBoard[leftDiagonalB]&&origBoard[i]==origBoard[leftDiagonalC]) {
 			showWinner(player);
 		}
 		//BOTTOM RIGHT DIAGONALS
 		let rightDiagonalA = i+cellCountX+1;
-		let rightDiagonalB = i+2*cellCountX+2;
+		let rightDiagonalB = rightDiagonalA+cellCountX+1
+		let rightDiagonalC = rightDiagonalB+cellCountX+1;
 		//console.log(cell, rightDiagonalA, rightDiagonalB);
 
-		if (origBoard[i]==origBoard[rightDiagonalA]&&origBoard[i]==origBoard[rightDiagonalB]) {
+		if (origBoard[i]==origBoard[rightDiagonalA]&&origBoard[i]==origBoard[rightDiagonalB]&&origBoard[i]==origBoard[rightDiagonalC]) {
 			showWinner(player);
 		}
 	}
