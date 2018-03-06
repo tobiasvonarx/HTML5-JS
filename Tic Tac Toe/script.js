@@ -92,6 +92,17 @@ function gameCompleted(id) {
 					leftDiagonalC += cellCountX;
 				}
 			}
+			//bottom overshoot with left diagonal
+			if (leftDiagonalA>24) {
+				leftDiagonalA -= cellCountX*cellCountY;
+				leftDiagonalB = leftDiagonalA+cellCountX-1;
+				leftDiagonalC = leftDiagonalB+cellCountX-1;
+			} else if (leftDiagonalB>24) {
+				leftDiagonalB -= cellCountX*cellCountY;
+				leftDiagonalC = leftDiagonalB+cellCountX-1;
+			} else if (leftDiagonalC>24) {
+				leftDiagonalC -= cellCountX*cellCountY;
+			}
 			//check if there is an overshoot on the bottom left tile
 			if (i == 20) {
 				leftDiagonalA = 4;
@@ -132,6 +143,17 @@ function gameCompleted(id) {
 				} else if (lCol.includes(rightDiagonalC)) {
 					rightDiagonalC -= cellCountX;
 				}
+			}
+			//bottom overshoot with right diagonal
+			if (rightDiagonalA>24) {
+				rightDiagonalA -= cellCountX*cellCountY;
+				rightDiagonalB = rightDiagonalA+cellCountX+1;
+				rightDiagonalC = rightDiagonalB+cellCountX+1;
+			} else if (rightDiagonalB>24) {
+				rightDiagonalB -= cellCountX*cellCountY;
+				rightDiagonalC = rightDiagonalB+cellCountX+1;
+			} else if (rightDiagonalC>24) {
+				rightDiagonalC -= cellCountX*cellCountY;
 			}
 			//check if there is an overshoot on the bottom left tile
 			if (i == 20) {
