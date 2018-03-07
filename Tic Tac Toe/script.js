@@ -78,6 +78,17 @@ function gameCompleted(id) {
 
 		if (typeof origBoard[i]=='string') {
 			//check for LEFT DIAGONAL overshoot
+			//bottom overshoot with left diagonal
+			if (leftDiagonalA>24) {
+				leftDiagonalA -= cellCountX*cellCountY;
+				leftDiagonalB = leftDiagonalA+cellCountX-1;
+				leftDiagonalC = leftDiagonalB+cellCountX-1;
+			} else if (leftDiagonalB>24) {
+				leftDiagonalB -= cellCountX*cellCountY;
+				leftDiagonalC = leftDiagonalB+cellCountX-1;
+			} else if (leftDiagonalC>24) {
+				leftDiagonalC -= cellCountX*cellCountY;
+			}			
 			//check if a diagonal or the cell itself is on a corner here
 			if (rCol.includes(leftDiagonalA) || rCol.includes(leftDiagonalB) || rCol.includes(leftDiagonalC)) {
 				//check right edges before corners
@@ -92,17 +103,7 @@ function gameCompleted(id) {
 					leftDiagonalC += cellCountX;
 				}
 			}
-			//bottom overshoot with left diagonal
-			if (leftDiagonalA>24) {
-				leftDiagonalA -= cellCountX*cellCountY;
-				leftDiagonalB = leftDiagonalA+cellCountX-1;
-				leftDiagonalC = leftDiagonalB+cellCountX-1;
-			} else if (leftDiagonalB>24) {
-				leftDiagonalB -= cellCountX*cellCountY;
-				leftDiagonalC = leftDiagonalB+cellCountX-1;
-			} else if (leftDiagonalC>24) {
-				leftDiagonalC -= cellCountX*cellCountY;
-			}
+
 			//check if there is an overshoot on the bottom left tile
 			if (i == 20) {
 				leftDiagonalA = 4;
@@ -124,11 +125,24 @@ function gameCompleted(id) {
 			} else if (leftDiagonalB == 24) {
 				leftDiagonalC = 3;
 			}
+			/*
 			console.log('cell: ',i);
 			console.log('left diagonals are: ');
 			console.log(leftDiagonalA+' '+leftDiagonalB+' '+leftDiagonalC);
+			*/
 
 			//check for RIGHT DIAGONAL overshoot
+			//bottom overshoot with right diagonal
+			if (rightDiagonalA>24) {
+				rightDiagonalA -= cellCountX*cellCountY;
+				rightDiagonalB = rightDiagonalA+cellCountX+1;
+				rightDiagonalC = rightDiagonalB+cellCountX+1;
+			} else if (rightDiagonalB>24) {
+				rightDiagonalB -= cellCountX*cellCountY;
+				rightDiagonalC = rightDiagonalB+cellCountX+1;
+			} else if (rightDiagonalC>24) {
+				rightDiagonalC -= cellCountX*cellCountY;
+			}			
 			//check if a diagonal or the cell itself is on a corner here
 			if (lCol.includes(rightDiagonalA) || lCol.includes(rightDiagonalB) || lCol.includes(rightDiagonalC)) {
 				console.log('edge rightdiagonal');
@@ -144,17 +158,7 @@ function gameCompleted(id) {
 					rightDiagonalC -= cellCountX;
 				}
 			}
-			//bottom overshoot with right diagonal
-			if (rightDiagonalA>24) {
-				rightDiagonalA -= cellCountX*cellCountY;
-				rightDiagonalB = rightDiagonalA+cellCountX+1;
-				rightDiagonalC = rightDiagonalB+cellCountX+1;
-			} else if (rightDiagonalB>24) {
-				rightDiagonalB -= cellCountX*cellCountY;
-				rightDiagonalC = rightDiagonalB+cellCountX+1;
-			} else if (rightDiagonalC>24) {
-				rightDiagonalC -= cellCountX*cellCountY;
-			}
+
 			//check if there is an overshoot on the bottom left tile
 			if (i == 20) {
 				rightDiagonalA = 1;
@@ -176,9 +180,9 @@ function gameCompleted(id) {
 			} else if (rightDiagonalB == 24) {
 				rightDiagonalC = 0;
 			}
-
+/*
 			console.log('right diagonals are: ');
-			console.log(rightDiagonalA+' '+rightDiagonalB+' '+rightDiagonalC);
+			console.log(rightDiagonalA+' '+rightDiagonalB+' '+rightDiagonalC);*/
 
 		}
 
