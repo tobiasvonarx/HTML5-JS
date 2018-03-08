@@ -63,8 +63,8 @@ function turn(squareId, player) {
 
 function gameCompleted(id) {
 	let player = origBoard[id];
-	let rCol = [4,9,14,19];
-	let lCol = [0,5,10,15,25];
+	let rCol = [4,9,14,19,24];
+	let lCol = [0,5,10,15,20];
 	for (let i=0; i<25; i++) {
 		//BOTTOM LEFT DIAGONALS
 		let leftDiagonalA = i+cellCountX-1;
@@ -125,12 +125,10 @@ function gameCompleted(id) {
 			} else if (leftDiagonalB == 24) {
 				leftDiagonalC = 3;
 			}
-			/*
+			
 			console.log('cell: ',i);
 			console.log('left diagonals are: ');
 			console.log(leftDiagonalA+' '+leftDiagonalB+' '+leftDiagonalC);
-			*/
-
 			//check for RIGHT DIAGONAL overshoot
 			//bottom overshoot with right diagonal
 			if (rightDiagonalA>24) {
@@ -142,7 +140,7 @@ function gameCompleted(id) {
 				rightDiagonalC = rightDiagonalB+cellCountX+1;
 			} else if (rightDiagonalC>24) {
 				rightDiagonalC -= cellCountX*cellCountY;
-			}			
+			}					
 			//check if a diagonal or the cell itself is on a corner here
 			if (lCol.includes(rightDiagonalA) || lCol.includes(rightDiagonalB) || lCol.includes(rightDiagonalC)) {
 				console.log('edge rightdiagonal');
@@ -158,8 +156,7 @@ function gameCompleted(id) {
 					rightDiagonalC -= cellCountX;
 				}
 			}
-
-			//check if there is an overshoot on the bottom left tile
+				//check if there is an overshoot on the bottom left tile
 			if (i == 20) {
 				rightDiagonalA = 1;
 				rightDiagonalB = rightDiagonalA+cellCountX+1;
@@ -180,9 +177,9 @@ function gameCompleted(id) {
 			} else if (rightDiagonalB == 24) {
 				rightDiagonalC = 0;
 			}
-/*
+
 			console.log('right diagonals are: ');
-			console.log(rightDiagonalA+' '+rightDiagonalB+' '+rightDiagonalC);*/
+			console.log(rightDiagonalA+' '+rightDiagonalB+' '+rightDiagonalC);
 
 		}
 
