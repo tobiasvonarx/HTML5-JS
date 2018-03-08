@@ -133,14 +133,14 @@ function gameCompleted(id) {
 
 			//check for RIGHT DIAGONAL overshoot
 			//bottom overshoot with right diagonal
-			if (rightDiagonalA>26) {
+			if (rightDiagonalA>24) {
 				rightDiagonalA -= cellCountX*cellCountY;
 				rightDiagonalB = rightDiagonalA+cellCountX+1;
 				rightDiagonalC = rightDiagonalB+cellCountX+1;
-			} else if (rightDiagonalB>26) {
+			} else if (rightDiagonalB>24) {
 				rightDiagonalB -= cellCountX*cellCountY;
 				rightDiagonalC = rightDiagonalB+cellCountX+1;
-			} else if (rightDiagonalC>26) {
+			} else if (rightDiagonalC>24) {
 				rightDiagonalC -= cellCountX*cellCountY;
 			}			
 			//check if a diagonal or the cell itself is on a corner here
