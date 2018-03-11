@@ -1,7 +1,7 @@
 let canvas = document.getElementById('canvas');
-let canvasContext = canvas.getContext('2d');  
+let canvasContext = canvas.getContext('2d');
 
-canvasContext.fillStyle = 'black';    //setup
+canvasContext.fillStyle = 'black'; //setup
 canvasContext.lineWidth = 1;
 
 //add math methods radians and degree for conversion
@@ -20,11 +20,11 @@ function colorSquare(leftX, topY, len) {
 }
 
 function drawFractal(sideLength) {
-  if (sideLength>1) {
+  if (sideLength > 1) {
     colorSquare(1, 1, sideLength);
     //tan(15°) = deltaY / (sideLength-deltaY);
     //-->
-    let deltaY = (1/2*sideLength) - (Math.sqrt(3)*sideLength/6);
+    let deltaY = (1 / 2 * sideLength) - (Math.sqrt(3) * sideLength / 6);
     let newLength = deltaY / Math.sin(Math.radians(15));
     canvasContext.translate(0, deltaY);
     canvasContext.rotate(Math.radians(-15));
@@ -32,7 +32,7 @@ function drawFractal(sideLength) {
   }
 }
 
-canvasContext.beginPath();            //draw fractal
+canvasContext.beginPath(); //draw fractal
 drawFractal(598);
 canvasContext.closePath();
 canvasContext.stroke();
