@@ -51,7 +51,7 @@ function initialiseGame(){			//gets called when images finish loading
 	setup();
 
 	//run logic at ~fps
-	setInterval(function(){moveEverything();drawEverything();}, 1000/framesPerSecond);
+	setInterval(function(){drawEverything();moveEverything();}, 1000/framesPerSecond);
 }
 
 function loadingScreen(){
