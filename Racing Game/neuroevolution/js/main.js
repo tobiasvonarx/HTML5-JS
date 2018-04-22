@@ -1,137 +1,162 @@
- /*			VERSION 20171202
-TODO:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-(-Highscore system and highest speed ever system in unit pix/frame derived from carSpeed)
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-*/
+ // Last updated 20180422
+ // TODO:
+ // - FIX BUG WHERE TOO MANY CARS SPAWN! (potentially related to order of calling loadLevel and the for-loop calling the reset method or something like that)
+ // - give the car class an attribute score 
+ // - increase it the number of unique road tiles it passes through and decrease it with every passing tick (e.g val of 1)
+ // - give the score a starting value (e.g 60 (with 30 fps the car has 2 seconds to move to the next tile before the score < 0))
+ // - decrease score if car hits the wall
+ // - write function/method to normalize the score to fitness (yet to figure out)
+ // - implement ga (genetic algorithm)
+ // - more coming soon...
 
-var canvas = document.getElementById('gameCanvas');
-var canvasContext = canvas.getContext('2d');
+ var canvas = document.getElementById('gameCanvas');
+ var canvasContext = canvas.getContext('2d');
 
-var showStartScreen = true;			//sets to true on reload
-var showPauseScreen;
-var showEndScreen;
+ var showStartScreen = true; //sets to true on reload
+ var showPauseScreen;
+ var showEndScreen;
 
-var blueCar = new carClass();
-var greenCar = new carClass();
+ // var blueCar = new carClass();
+ // var greenCar = new carClass();
+ var cars = [];
+ var carCount = 3;
 
-function setup(){
-	//showStartScreen = true;		does not activate start screen on every other reset than start, see variable assignment above
-	showPauseScreen = false;
-	showEndScreen = false;
+ function setup() {
+ 	//showStartScreen = true;		does not activate start screen on every other reset than start, see variable assignment above
+ 	showPauseScreen = false;
+ 	showEndScreen = false;
 
-	finishLineReached = false;
-	waymarkReached = false;
+ 	finishLineReached = false;
+ 	waymarkReached = false;
 
-	loadLevel(levelOne);
-}
+ 	for (var i = 0; i < carCount; i++) {
+ 		cars.push(new carClass());
+ 	}
 
-function loadLevel(level){
-	trackGrid = level.slice();		//need to copy the array by value instead of referncing different memory of the same object
+ 	loadLevel(levelOne);
+ }
 
-	//set cars position to start
-	blueCar.reset(firstPlayerStartTile,blueCarPicBrake,blueCarPicIdle,'blaues Auto');
-	greenCar.reset(secondPlayerStartTile,greenCarPicBrake,greenCarPicIdle,'grünes Auto');
-}
+ function loadLevel(level) {
+ 	trackGrid = level.slice(); //need to copy the array by value instead of referncing different memory of the same object
 
-window.onload = function(){
-	console.log('Hello World');
-	//setup input event listeners
-	setupInput();
+ 	//set cars position to start
+ 	// blueCar.reset(firstPlayerStartTile, blueCarPicBrake, blueCarPicIdle, 'blaues Auto');
+ 	// greenCar.reset(secondPlayerStartTile, greenCarPicBrake, greenCarPicIdle, 'grünes Auto');
+  	for (var i = 0; i < cars.length; i++) {
+  		var pic = blueCarPicIdle;
+ 		cars[i].reset(firstPlayerStartTile, pic, pic, 'car');
+ 	}
+ }
 
-	loadingScreen();
+ window.onload = function() {
+ 	console.log('Hello World');
+ 	//setup input event listeners
+ 	setupInput();
 
-	//load images
-	loadImages();	
-}
+ 	loadingScreen();
 
-function initialiseGame(){			//gets called when images finish loading
-	var framesPerSecond = 30;
+ 	//load images
+ 	loadImages();
+ }
 
-	//setup variables
-	setup();
+ function initialiseGame() { //gets called when images finish loading
+ 	var framesPerSecond = 30;
 
-	//run logic at ~fps
-	setInterval(function(){drawEverything();moveEverything();}, 1000/framesPerSecond);
-}
+ 	//setup variables
+ 	setup();
 
-function loadingScreen(){
-	//loading screen
-	colorRect(0, 0, canvas.width, canvas.height, 'black');
-	drawText('Music by Schlengnon', 15, 15, 'begin', 'white', '5px verdana');
-	drawText('Loading...', canvas.width/2, canvas.height/2, 'center', 'white', '30px verdana');
-}
+ 	//run logic at ~fps
+ 	setInterval(function() {
+ 		drawEverything();
+ 		moveEverything();
+ 	}, 1000 / framesPerSecond);
+ }
 
-function moveEverything(){
-	if(!showStartScreen && !showPauseScreen && !showEndScreen){
-		blueCar.move();
-		greenCar.move();
-	}
+ function loadingScreen() {
+ 	//loading screen
+ 	colorRect(0, 0, canvas.width, canvas.height, 'black');
+ 	drawText('Music by Schlengnon', 15, 15, 'begin', 'white', '5px verdana');
+ 	drawText('Loading...', canvas.width / 2, canvas.height / 2, 'center', 'white', '30px verdana');
+ }
 
-}
+ function moveEverything() {
+ 	if (!showStartScreen && !showPauseScreen && !showEndScreen) {
+ 		// blueCar.move();
+ 		// greenCar.move();
+	   	for (var i = 0; i < cars.length; i++) {
+	 		cars[i].move()
+	 	}
+ 	}
 
-function drawEverything(){
-	//game
-	if(!showStartScreen && !showPauseScreen){
-		//tracks
-		drawTracks();
+ }
 
-		//car
-		blueCar.draw();
-		greenCar.draw();
+ function drawEverything() {
+ 	//game
+ 	if (!showStartScreen && !showPauseScreen) {
+ 		//tracks
+ 		drawTracks();
 
-		//time
-		//drawText('Time: '+Math.floor(time), 400, 200, 'center', 'white');
+ 		//car
+ 		// blueCar.draw();
+ 		// greenCar.draw();
+ 	  	for (var i = 0; i < cars.length; i++) {
+ 			cars[i].draw();
+ 		}
 
-	} else {
-		//black canvas background
-		colorRect(0, 0, canvas.width, canvas.height, 'black');
+ 		//time
+ 		//drawText('Time: '+Math.floor(time), 400, 200, 'center', 'white');
 
-	}
+ 	} else {
+ 		//black canvas background
+ 		colorRect(0, 0, canvas.width, canvas.height, 'black');
 
-	//start screen
-	if(showStartScreen){
-		drawText('RACING GAME', canvas.width/2, canvas.height/2, 'center', 'white', '80px comic sans ms');
-		drawText('Press SPACE to play', canvas.width/2, canvas.height/4*3, 'center', 'white', '40px verdana');
-	}
-	//pause screen
-	if(showPauseScreen){
-		drawText('Game Paused', canvas.width/2, canvas.height/2, 'center', 'white', '80px arial black');
-		drawText('Press SPACE to continue playing', canvas.width/2, canvas.height/4*3, 'center', 'white', '20px arial')
-	}
+ 	}
 
-	//end screen
-	if(showEndScreen){
-		var winnerCar; var winnerCarName;
-		//console.log(blueCar.time, greenCar.time);
+ 	//start screen
+ 	if (showStartScreen) {
+ 		drawText('RACING GAME', canvas.width / 2, canvas.height / 2, 'center', 'white', '80px comic sans ms');
+ 		drawText('Press SPACE to play', canvas.width / 2, canvas.height / 4 * 3, 'center', 'white', '40px verdana');
+ 	}
+ 	//pause screen
+ 	if (showPauseScreen) {
+ 		drawText('Game Paused', canvas.width / 2, canvas.height / 2, 'center', 'white', '80px arial black');
+ 		drawText('Press SPACE to continue playing', canvas.width / 2, canvas.height / 4 * 3, 'center', 'white', '20px arial')
+ 	}
 
-		if(blueCar.finishLineReached){
-			winnerCar = blueCar;
-		} else if(greenCar.finishLineReached){
-			winnerCar = greenCar;
-		}
+ 	//end screen
+ 	if (showEndScreen) {
+ 		var winnerCar;
+ 		var winnerCarName;
+ 		//console.log(blueCar.time, greenCar.time);
 
-		/*
-		var resultatMeinung = [];
-		if(winnerCar.time<=20){
-			resultatMeinung.push('profimässig');
-			resultatMeinung.push('')
-			resultatMeinung.push('mlg wow');
-		} else if(t>20 && t<24){
-			resultatMeinung.push('sehr tropfig (\u00A9Lenny)');
-			resultatMeinung.push('nice');
-		} else if(t>23 && t<25){
-			resultatMeinung.push('oké');
-		} else{					//Math.floor(time)>25
-			resultatMeinung.push('*facepalm* smh (\u00A9Maxi)');
-			resultatMeinung.push('')
-		}
-		var randChoice = resultatMeinung[Math.floor(Math.random() * resultatMeinung.length)];
-		//alert('Dein Resultat von '+time.toFixed(2)+' sekunden ist '+randChoice);
-		*/
+ 		if (blueCar.finishLineReached) {
+ 			winnerCar = blueCar;
+ 		} else if (greenCar.finishLineReached) {
+ 			winnerCar = greenCar;
+ 		}
 
-		alert('Das '+winnerCar.name+' hat mit einem Resultat von '+winnerCar.time.toFixed(2)+' gewonnen!');
+ 		/*
+ 		var resultatMeinung = [];
+ 		if(winnerCar.time<=20){
+ 			resultatMeinung.push('profimässig');
+ 			resultatMeinung.push('')
+ 			resultatMeinung.push('mlg wow');
+ 		} else if(t>20 && t<24){
+ 			resultatMeinung.push('sehr tropfig (\u00A9Lenny)');
+ 			resultatMeinung.push('nice');
+ 		} else if(t>23 && t<25){
+ 			resultatMeinung.push('oké');
+ 		} else{					//Math.floor(time)>25
+ 			resultatMeinung.push('*facepalm* smh (\u00A9Maxi)');
+ 			resultatMeinung.push('')
+ 		}
+ 		var randChoice = resultatMeinung[Math.floor(Math.random() * resultatMeinung.length)];
+ 		//alert('Dein Resultat von '+time.toFixed(2)+' sekunden ist '+randChoice);
+ 		*/
 
-		setup();
+ 		alert('Das ' + winnerCar.name + ' hat mit einem Resultat von ' + winnerCar.time.toFixed(2) + ' gewonnen!');
 
-	}
-}
+ 		setup();
+
+ 	}
+ }

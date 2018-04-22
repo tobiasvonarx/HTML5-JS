@@ -4,9 +4,21 @@ const carTurnRate = 0.05;
 const speedDecay = 0.988; // percent
 const minSpeedToTurn = 0.3;
 
+function mutate(x) {
+	if (random(1) < 0.1) {
+		let offset = randomGaussian() * 0.5;
+		let newx = x + offset;
+		return newx;
+	} else {
+		return x;
+	}
+}
+
 function carClass() {
 	this.x;
 	this.y;
+	this.w = 100;
+	this.h = 60;
 	this.ang;
 	this.speed;
 
@@ -31,7 +43,7 @@ function carClass() {
 	this.finishLineReached;
 	this.waymarkReached;
 
-	this.brain = new NeuralNetwork(4, 16, 4);
+	this.brain = new NeuralNetwork(5, 25, 4);
 	/*
 	this.setupKeys = function(keyGas,keyBrakes,keyTurnLeft,keyTurnRight){
 		this.controlKeyGas = keyGas;
@@ -62,7 +74,7 @@ function carClass() {
 		for (var eachRow = 0; eachRow < trackRows; eachRow++) { //two for loops to iterate through drawing the cols and rows
 			for (var eachCol = 0; eachCol < trackCols; eachCol++) { //eachRow and eachCol are the loop variables
 
-				var arrayIndex = rowColToArrayIndex(eachCol, eachRow); //make a variable to map all tracks to an index
+				var arrayIndex = colRowToArrayIndex(eachCol, eachRow); //make a variable to map all tracks to an index
 
 				if (trackGrid[arrayIndex] == startTile) { //spawn-point
 					this.x = (eachCol * trackSize) + (trackSize / 2);
@@ -78,61 +90,79 @@ function carClass() {
 		}
 
 		var frontDistToWall;
+		var foundFrontDist = false;
 		var leftDistToWall;
+		var foundLeftDist = false;
 		var rightDistToWall;
+		var foundRightDist = false;
 		var backDistToWall;
+		var foundBackDist = false;
 
-		var interval = 40;
+		// x = eachCol*trackSize + trackSize/2
+		// eachCol*trackSize = x - trackSize/2
+		// eachCol = x/trackSize - 1/2
 
-		//find polar coords at length of increment "interval" in all 4 directions until hitting
-		//the wall, then the distance in amount of "intervals" = dist to corresponding wall
-		var xFront = interval * Math.cos(Math.radians(this.ang + 270)) + this.x;
-		var yFront = interval * Math.sin(Math.radians(this.ang + 270)) + this.y;
-		var xBack = interval * Math.cos(Math.radians(this.ang + 90)) + this.x;
-		var yBack = interval * Math.sin(Math.radians(this.ang + 90)) + this.y;
-		var xLeft = interval * Math.cos(Math.radians(this.ang + 180)) + this.x;
-		var yLeft = interval * Math.sin(Math.radians(this.ang + 180)) + this.y;
-		var xRight = interval * Math.cos(Math.radians(this.ang)) + this.x;
-		var yRight = interval * Math.sin(Math.radians(this.ang)) + this.y;
-		var rowFront = Math.floor(yFront / trackSize);
-		var colFront = Math.floor(xFront / trackSize);
-		var rowBack = Math.floor(yBack / trackSize);
-		var colBack = Math.floor(xBack / trackSize);
-		var rowLeft = Math.floor(yLeft / trackSize);
-		var colLeft = Math.floor(xLeft / trackSize);
-		var rowRight = Math.floor(yRight / trackSize);
-		var colRight = Math.floor(xRight / trackSize);
-		var tileFront = returnTileTypeAtColRow(colFront, rowFront);
-		var tileBack = returnTileTypeAtColRow(colBack, rowBack);
-		var tileLeft = returnTileTypeAtColRow(colLeft, rowLeft);
-		var tileRight = returnTileTypeAtColRow(colRight, rowRight);
-		// console.log('Front',tileFront, rowFront, colFront);
-		// console.log('Back', tileBack, rowBack, colBack);
-		colorRect(xFront, yFront, 5, 5, 'purple');
-		drawText(tileFront, xFront, yFront, 'black')
-		colorRect(xBack, yBack, 5, 5, 'red');
-		drawText(tileBack, xBack, yBack, 'black')
-		colorRect(xLeft, yLeft, 5, 5, 'blue');
-		drawText(tileLeft, xLeft, yLeft, 'black')
-		colorRect(xRight, yRight, 5, 5, 'white');
-		drawText(tileRight, xRight, yRight, 'black')
-		// this.speed += carGasRate;
+		var col = Math.round(this.x / trackSize - 0.5);
+		var row = Math.round(this.y / trackSize - 0.5);
+		//console.log(row);
+		var tile = returnTileTypeAtColRow(col, row);
+		//console.log(tile);
 
+		for (frontDistToWall = 1; foundFrontDist != true; frontDistToWall++) { // while distance to front wall not found
+			var front = row - frontDistToWall;
+			if (returnTileTypeAtColRow(col, front) != 0) { //found collision
+				foundFrontDist = true;
+				frontDistToWall--;
+			}
+		}
+		for (backDistToWall = 1; foundBackDist != true; backDistToWall++) { // while distance to back wall not found
+			var back = row + backDistToWall;
+			if (returnTileTypeAtColRow(col, back) != 0) { //found collision
+				foundBackDist = true;
+				backDistToWall--;
+			}
+		}
+		for (leftDistToWall = 1; foundLeftDist != true; leftDistToWall++) { // while distance to back wall not found
+			var left = col - leftDistToWall;
+			if (returnTileTypeAtColRow(left, row) != 0) { //found collision
+				foundLeftDist = true;
+				leftDistToWall--;
+			}
+		}
+		for (rightDistToWall = 1; foundRightDist != true; rightDistToWall++) { // while distance to back wall not found
+			var right = col + rightDistToWall;
+			if (returnTileTypeAtColRow(right, row) != 0) { //found collision
+				foundRightDist = true;
+				rightDistToWall--;
+			}
+		}
+		var adjustedAngle = sigmoid.func((this.ang > 0) ? (this.ang % (2 * Math.PI)) : (this.ang % (-2 * Math.PI) + 2 * Math.PI));
+		frontDistToWall /= 20;
+		backDistToWall /= 20;
+		leftDistToWall /= 20;
+		rightDistToWall /= 20;
+		// console.log(frontDistToWall, backDistToWall, leftDistToWall, rightDistToWall);
 
-		if (this.keyHeldGas) { //executed every frame the up arrow is held
+		var prediction = this.brain.predict([adjustedAngle, frontDistToWall, backDistToWall, leftDistToWall, rightDistToWall])
+		this.keyHeldGas = prediction[0] > 0.5 ? true : false;
+		this.keyHeldBrakes = prediction[1] > 0.5 ? true : false;
+		this.keyHeldTurnLeft = prediction[2] > 0.5 ? true : false;
+		this.keyHeldTurnRight = prediction[3] > 0.5 ? true : false;
+
+		if (this.keyHeldGas) { // executed every frame the up arrow is held
 			this.speed += carGasRate;
 		}
 		if (this.keyHeldBrakes) {
 			this.speed -= carBrakeRate;
 		}
-		if (Math.abs(this.speed) > minSpeedToTurn) {
-			if (this.keyHeldTurnLeft) {
-				this.ang -= carTurnRate;
-			}
-			if (this.keyHeldTurnRight) {
-				this.ang += carTurnRate;
-			}
+		// if (Math.abs(this.speed) > minSpeedToTurn) {
+		if (this.keyHeldTurnLeft) {
+			this.ang -= carTurnRate;
 		}
+		if (this.keyHeldTurnRight) {
+			this.ang += carTurnRate;
+		}
+		// }
 		if (!this.keyHeldGas) {
 			this.speed *= speedDecay;
 		}

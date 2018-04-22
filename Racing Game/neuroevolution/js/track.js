@@ -34,7 +34,7 @@ const secondPlayerStartTile = 3;
 function returnTileTypeAtColRow(col, row) {
     if(col >= 0 && col < trackCols &&                       //no bugs
         row >= 0 && row < trackRows) {
-        var trackIndexUnderCoord = rowColToArrayIndex(col, row);
+        var trackIndexUnderCoord = colRowToArrayIndex(col, row);
         var tile = trackGrid[trackIndexUnderCoord];
         return tile;
     } else {
@@ -45,7 +45,7 @@ function returnTileTypeAtColRow(col, row) {
 function carTrackHandling(car){
     var carTrackCol = Math.floor(car.x / trackSize);
     var carTrackRow = Math.floor(car.y / trackSize);
-    var trackIndexUnderCar = rowColToArrayIndex(carTrackCol, carTrackRow);
+    var trackIndexUnderCar = colRowToArrayIndex(carTrackCol, carTrackRow);
 
     if(carTrackCol >= 0 && carTrackCol < trackCols &&                       //no bugs
         carTrackRow >= 0 && carTrackRow < trackRows) {
@@ -77,7 +77,7 @@ function carTrackHandling(car){
 }
 
 
-function rowColToArrayIndex(col, row){
+function colRowToArrayIndex(col, row){
     return col + trackCols * row;           //function to return index of track at a column and a row
 }
 

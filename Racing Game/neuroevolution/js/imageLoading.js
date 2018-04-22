@@ -9,10 +9,10 @@
 //2. add object literal with file path and the trackType (holding the corresponding number) to imageData array
 //3. mention the assigned integer in trackGrid to draw it someplace
 
-var blueCarPicBrake = document.createElement('img');
+// var blueCarPicBrake = document.createElement('img');
 var blueCarPicIdle = document.createElement('img');
-var greenCarPicBrake = document.createElement('img');
-var greenCarPicIdle = document.createElement('img');
+// var greenCarPicBrake = document.createElement('img');
+// var greenCarPicIdle = document.createElement('img');
 
 var trackPics = []
 
@@ -20,7 +20,7 @@ var picsToLoad;	//set automatically based length of imageData array in loadImage
 
 function checkLoadingComplete(){		//if all pictures have loaded game gets started
 	picsToLoad --;
-	//console.log(picsToLoad);
+	//console.log(picsToLoad)
 	if(picsToLoad == 0){
 		//console.log('game intialising');
 		initialiseGame();
@@ -35,10 +35,10 @@ function beginLoadingImage(imgVar, filePath){
 
 function loadImages(){
 	var imageData = [												//data structure for storing neccessary image information
-		{var: blueCarPicBrake,file:'blueCarPicBrake.png'},
+		// {var: blueCarPicBrake,file:'blueCarPicBrake.png'},
 		{var: blueCarPicIdle,file:'blueCarPicIdle.png'},
-		{var: greenCarPicBrake,file:'greenCarPicBrake.png'},
-		{var: greenCarPicIdle,file:'greenCarPicIdle.png'},
+		// {var: greenCarPicBrake,file:'greenCarPicBrake.png'},
+		// {var: greenCarPicIdle,file:'greenCarPicIdle.png'},
 		{trackType: wallTile,file:'track_wall.png'},				//object literal (=hashtable or =dictionary)
 		{trackType: roadTile,file:'track_road.png'},
 		{trackType: waymarkTile,file:'track_road.png'},
