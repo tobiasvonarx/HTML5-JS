@@ -1,6 +1,5 @@
  // Last updated 20180422
  // TODO:
- // - FIX BUG WHERE TOO MANY CARS SPAWN! (potentially related to order of calling loadLevel and the for-loop calling the reset method or something like that)
  // - give the car class an attribute score 
  // - increase it the number of unique road tiles it passes through and decrease it with every passing tick (e.g val of 1)
  // - give the score a starting value (e.g 60 (with 30 fps the car has 2 seconds to move to the next tile before the score < 0))
@@ -19,7 +18,7 @@
  // var blueCar = new carClass();
  // var greenCar = new carClass();
  var cars = [];
- var carCount = 3;
+ var carCount = 30;
 
  function setup() {
  	//showStartScreen = true;		does not activate start screen on every other reset than start, see variable assignment above
@@ -30,7 +29,7 @@
  	waymarkReached = false;
 
  	for (var i = 0; i < carCount; i++) {
- 		cars.push(new carClass());
+ 		cars[i] = new carClass();
  	}
 
  	loadLevel(levelOne);
