@@ -5,8 +5,9 @@ const speedDecay = 0.988; // percent
 const minSpeedToTurn = 0.3;
 
 function mutate(x) {
-	if (random(1) < 0.1) {
-		let offset = randomGaussian() * 0.5;
+	if (Math.random(1) < 0.1) {
+		// let offset = randomGaussian() * 0.5;
+		let offset = (Math.random()*2-1)/2;
 		let newx = x + offset;
 		return newx;
 	} else {
@@ -14,16 +15,25 @@ function mutate(x) {
 	}
 }
 
-function carClass() {
+function carClass(brain) {
 	this.x;
 	this.y;
 	this.w = 100;
 	this.h = 60;
 	this.ang;
 	this.speed;
+	this.score;
 
 	this.imageBrake;
 	this.imageIdle;
+	this.positionIndexes;
+
+	if (brain instanceof NeuralNetwork) {
+		this.brain = brain.copy();
+		this.brain.mutate(mutate);
+	} else {
+		this.brain = new NeuralNetwork(5, 25, 4);
+	}
 
 	// booleans for steering
 	// this.keyHeldGas;
@@ -36,14 +46,14 @@ function carClass() {
 	// this.controlKeyTurnLeft;
 	// this.controlKeyTurnRight;
 
-	this.moved;
 	this.time;
 	this.name
 
 	this.finishLineReached;
 	this.waymarkReached;
 
-	this.brain = new NeuralNetwork(5, 25, 4);
+	// this.brain = new NeuralNetwork(5, 25, 4);
+
 	/*
 	this.setupKeys = function(keyGas,keyBrakes,keyTurnLeft,keyTurnRight){
 		this.controlKeyGas = keyGas;
@@ -53,7 +63,9 @@ function carClass() {
 	}*/
 
 	this.reset = function(startTile, carImageBrake, carImageIdle, name) {
-		this.name = name
+		this.name = name;
+		this.positionIndexes = [];
+		this.score = 200;
 
 		//booleans for steering
 		// this.keyHeldGas = false;
@@ -68,7 +80,6 @@ function carClass() {
 		this.imageIdle = carImageIdle;
 		this.ang = Math.radians(270);
 		this.speed = 0;
-		this.moved = false;
 		this.time = 0;
 
 		for (var eachRow = 0; eachRow < trackRows; eachRow++) { //two for loops to iterate through drawing the cols and rows
@@ -84,10 +95,26 @@ function carClass() {
 		}
 	}
 
+	this.copy = function() {
+		return new carClass(this.brain);
+	}
+
+	this.setPreviousPositions = function(index, tile) {
+		if (!this.positionIndexes.includes(index) && tile == roadTile) {
+			this.positionIndexes.push(index);
+			this.score += 60;
+		}
+	}
+
 	this.move = function() {
 		if (!finishLineReached) {
 			this.time += 0.0333333;
+			this.score -= 1;
 		}
+
+		// if (this.score < 0) {
+		// 	cars.remove(this);
+		// }
 
 		var frontDistToWall;
 		var foundFrontDist = false;

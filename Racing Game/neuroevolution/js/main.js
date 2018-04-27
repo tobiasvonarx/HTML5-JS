@@ -1,12 +1,9 @@
  // Last updated 20180422
  // TODO:
- // - give the car class an attribute score 
- // - increase it the number of unique road tiles it passes through and decrease it with every passing tick (e.g val of 1)
- // - give the score a starting value (e.g 60 (with 30 fps the car has 2 seconds to move to the next tile before the score < 0))
- // - decrease score if car hits the wall
- // - write function/method to normalize the score to fitness (yet to figure out)
- // - implement ga (genetic algorithm)
- // - more coming soon...
+ // Pool selection algorithm for genetic algorithm is not good, rather use the top 10 cars or so to achieve greater variety and potential
+ // speed up reinforcement learning process
+ // COMMENT OUT ga.js code
+
 
  var canvas = document.getElementById('gameCanvas');
  var canvasContext = canvas.getContext('2d');
@@ -18,7 +15,8 @@
  // var blueCar = new carClass();
  // var greenCar = new carClass();
  var cars = [];
- var carCount = 30;
+ var allCars = [];
+ var carCount = 500;
 
  function setup() {
  	//showStartScreen = true;		does not activate start screen on every other reset than start, see variable assignment above
@@ -30,7 +28,10 @@
 
  	for (var i = 0; i < carCount; i++) {
  		cars[i] = new carClass();
+ 		var pic = blueCarPicIdle;
+ 		cars[i].reset(firstPlayerStartTile, pic, pic, 'car');
  	}
+ 	allCars = cars.slice();
 
  	loadLevel(levelOne);
  }
@@ -41,10 +42,11 @@
  	//set cars position to start
  	// blueCar.reset(firstPlayerStartTile, blueCarPicBrake, blueCarPicIdle, 'blaues Auto');
  	// greenCar.reset(secondPlayerStartTile, greenCarPicBrake, greenCarPicIdle, 'grünes Auto');
-  	for (var i = 0; i < cars.length; i++) {
-  		var pic = blueCarPicIdle;
- 		cars[i].reset(firstPlayerStartTile, pic, pic, 'car');
- 	}
+
+ 	// for (var i = 0; i < cars.length; i++) {
+ 	// 	var pic = blueCarPicIdle;
+ 	// 	cars[i].reset(firstPlayerStartTile, pic, pic, 'car');
+ 	// }
  }
 
  window.onload = function() {
@@ -79,12 +81,21 @@
  }
 
  function moveEverything() {
+ 	// console.log(cars.length);
+
  	if (!showStartScreen && !showPauseScreen && !showEndScreen) {
  		// blueCar.move();
  		// greenCar.move();
-	   	for (var i = 0; i < cars.length; i++) {
-	 		cars[i].move()
-	 	}
+
+ 		if (cars.length == 0) {
+ 			nextGeneration();
+ 		}
+
+ 		for (var i = 0; i < cars.length; i++) {
+ 			// cars[i].move()
+
+ 			(cars[i].score < 0) ? cars.splice(i, 1): cars[i].move();
+ 		}
  	}
 
  }
@@ -98,7 +109,7 @@
  		//car
  		// blueCar.draw();
  		// greenCar.draw();
- 	  	for (var i = 0; i < cars.length; i++) {
+ 		for (var i = 0; i < cars.length; i++) {
  			cars[i].draw();
  		}
 
@@ -128,11 +139,13 @@
  		var winnerCarName;
  		//console.log(blueCar.time, greenCar.time);
 
- 		if (blueCar.finishLineReached) {
- 			winnerCar = blueCar;
- 		} else if (greenCar.finishLineReached) {
- 			winnerCar = greenCar;
+ 		for (var i = 0; i < cars.length; i++) {
+ 			var car = cars[i];
+ 			if (car.finishLineReached) {
+ 				winnerCar = car;
+ 			}
  		}
+
 
  		/*
  		var resultatMeinung = [];
@@ -153,9 +166,9 @@
  		//alert('Dein Resultat von '+time.toFixed(2)+' sekunden ist '+randChoice);
  		*/
 
- 		alert('Das ' + winnerCar.name + ' hat mit einem Resultat von ' + winnerCar.time.toFixed(2) + ' gewonnen!');
+ 		console.log('Das ' + winnerCar.name + ' hat mit einem Resultat von ' + winnerCar.time.toFixed(2) + ' gewonnen!');
 
- 		setup();
+ 		nextGeneration();
 
  	}
  }
