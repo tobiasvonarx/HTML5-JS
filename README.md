@@ -27,7 +27,10 @@ Suggestions for improving my code quality would be appreciated greatly :)
 ### Pythagoras tree fractal
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Pythagoras%20Tree%20Fractal/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Pythagoras%20Tree%20Fractal)
 ### Racing game
+##### 2-player
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Racing%20Game/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Racing%20Game)
+##### Neuroevolution simulation
+[Demo](https://tobiasvonarx.github.io/HTML5-JS/Racing%20Game/neuroevolution/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Racing%20Game/neuroevolution)
 ### Snake
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Snake/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Snake)
 ### Tic tac toe
