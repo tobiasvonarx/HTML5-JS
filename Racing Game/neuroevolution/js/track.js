@@ -106,7 +106,7 @@ function drawTracks() {
 
 	for (let eachRow = 0; eachRow < trackRows; eachRow++) { // two for loops to iterate through drawing the cols and rows
 
-		for (let eachCol = 0; eachCol < trackCols; eachCol++) { // eachRow and eachCol are the loop letiables
+		for (let eachCol = 0; eachCol < trackCols; eachCol++) { // eachRow and eachCol are the loop variables
 			let tileKind = trackGrid[arrayIndex];
 			let useImage = trackPics[tileKind];
 			canvasContext.drawImage(useImage, drawTileX, drawTileY); // draw

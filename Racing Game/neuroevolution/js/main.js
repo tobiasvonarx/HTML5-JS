@@ -62,7 +62,7 @@ window.onload = function() {
 function initialiseGame() { // gets called when images finish loading
 	let framesPerSecond = 30;
 
-	// setup letiables
+	// setup variables
 	setup();
 
 	// run logic at ~fps

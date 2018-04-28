@@ -84,7 +84,7 @@ function loadImages() {
 	}
 }
 
-function loadImageForTrackCode(trackCode, file) { // trackCode contains index letiable of tile type
-	trackPics[trackCode] = document.createElement('img'); // img letiable created
+function loadImageForTrackCode(trackCode, file) { // trackCode contains index variable of tile type
+	trackPics[trackCode] = document.createElement('img'); // img variable created
 	beginLoadingImage(trackPics[trackCode], file);
 }

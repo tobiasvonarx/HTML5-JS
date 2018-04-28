@@ -84,9 +84,9 @@ function carClass(brain) {
 		this.time = 0;
 
 		for (let eachRow = 0; eachRow < trackRows; eachRow++) { //two for loops to iterate through drawing the cols and rows
-			for (let eachCol = 0; eachCol < trackCols; eachCol++) { //eachRow and eachCol are the loop letiables
+			for (let eachCol = 0; eachCol < trackCols; eachCol++) { //eachRow and eachCol are the loop variables
 
-				let arrayIndex = colRowToArrayIndex(eachCol, eachRow); //make a letiable to map all tracks to an index
+				let arrayIndex = colRowToArrayIndex(eachCol, eachRow); //make a variable to map all tracks to an index
 
 				if (trackGrid[arrayIndex] == startTile) { //spawn-point
 					this.x = (eachCol * trackSize) + (trackSize / 2);
