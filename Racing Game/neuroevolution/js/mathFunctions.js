@@ -1,4 +1,4 @@
-//add math methods radians and degree for conversion
+// add math methods radians and degree for conversion
 Math.radians = function(degrees) {
 	return degrees * Math.PI / 180;
 };
@@ -9,7 +9,7 @@ Math.degrees = function(radians) {
 
 // adopted from github.com/processing/p5js
 function randomGaussian(mean, sd) {
-	var y1, x1, x2, w;
+	let y1, x1, x2, w;
 	if (previous) {
 		y1 = y2;
 		previous = false;
@@ -25,7 +25,7 @@ function randomGaussian(mean, sd) {
 		previous = true;
 	}
 
-	var m = mean || 0;
-	var s = sd || 1;
+	let m = mean || 0;
+	let s = sd || 1;
 	return y1 * s + m;
-};
+}
