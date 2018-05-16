@@ -13,7 +13,7 @@ let showEndScreen;
 // let blueCar = new carClass();
 // let greenCar = new carClass();
 let cars = [];
-const carCount = 500;
+const carCount = 1;
 let nextGenerationCars = [];
 let foundNextGenCars = false;
 const numOfBestCars = 5;
