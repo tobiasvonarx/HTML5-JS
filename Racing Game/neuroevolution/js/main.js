@@ -13,10 +13,10 @@ let showEndScreen;
 // let blueCar = new carClass();
 // let greenCar = new carClass();
 let cars = [];
-const carCount = 1;
+const carCount = 500;
 let nextGenerationCars = [];
 let foundNextGenCars = false;
-const numOfBestCars = 5;
+const numOfBestCars = 10;
 
 function setup() {
 	// showStartScreen = true; does not activate start screen on every other reset than start, see variable assignment above
