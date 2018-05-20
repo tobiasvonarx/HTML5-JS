@@ -33,7 +33,7 @@ function carClass(brain) {
 		this.brain = brain.copy();
 		this.brain.mutate(mutate);
 	} else {
-		this.brain = new NeuralNetwork(5, 25, 4);
+		this.brain = new NeuralNetwork(9, 7, 4);
 	}
 
 	// booleans for steering
@@ -48,7 +48,7 @@ function carClass(brain) {
 	// this.controlKeyTurnRight;
 
 	this.time;
-	this.name
+	this.name;
 
 	this.finishLineReached;
 	this.waymarkReached;
@@ -114,14 +114,14 @@ function carClass(brain) {
 			this.score--;
 		}
 
-		let frontDistToWall;
-		let foundFrontDist = false;
-		let leftDistToWall;
-		let foundLeftDist = false;
-		let rightDistToWall;
-		let foundRightDist = false;
-		let backDistToWall;
-		let foundBackDist = false;
+		// let frontDistToWall;
+		// let foundFrontDist = false;
+		// let leftDistToWall;
+		// let foundLeftDist = false;
+		// let rightDistToWall;
+		// let foundRightDist = false;
+		// let backDistToWall;
+		// let foundBackDist = false;
 
 		// x = eachCol*trackSize + trackSize/2
 		// eachCol*trackSize = x - trackSize/2
@@ -129,50 +129,167 @@ function carClass(brain) {
 
 		let col = Math.round(this.x / trackSize - 0.5);
 		let row = Math.round(this.y / trackSize - 0.5);
+
+		// console.log(col, row);
 		//console.log(row);
-		let tile = returnTileTypeAtColRow(col, row);
+		// let tile = returnTileTypeAtColRow(col, row);
 		//console.log(tile);
 
-		for (frontDistToWall = 1; foundFrontDist != true; frontDistToWall++) { // while distance to front wall not found
-			let front = row - frontDistToWall;
-			if (returnTileTypeAtColRow(col, front) != 0) { // found collision
-				foundFrontDist = true;
-				frontDistToWall--;
-			}
-		}
-		for (backDistToWall = 1; foundBackDist != true; backDistToWall++) { // while distance to back wall not found
-			let back = row + backDistToWall;
-			if (returnTileTypeAtColRow(col, back) != 0) { // found collision
-				foundBackDist = true;
-				backDistToWall--;
-			}
-		}
-		for (leftDistToWall = 1; foundLeftDist != true; leftDistToWall++) { // while distance to back wall not found
-			let left = col - leftDistToWall;
-			if (returnTileTypeAtColRow(left, row) != 0) { // found collision
-				foundLeftDist = true;
-				leftDistToWall--;
-			}
-		}
-		for (rightDistToWall = 1; foundRightDist != true; rightDistToWall++) { // while distance to back wall not found
-			let right = col + rightDistToWall;
-			if (returnTileTypeAtColRow(right, row) != 0) { // found collision
-				foundRightDist = true;
-				rightDistToWall--;
-			}
-		}
-		let adjustedAngle = sigmoid.func((this.ang > 0) ? (this.ang % (2 * Math.PI)) : (this.ang % (-2 * Math.PI) + 2 * Math.PI));
-		frontDistToWall /= 20;
-		backDistToWall /= 20;
-		leftDistToWall /= 20;
-		rightDistToWall /= 20;
+		let top = (collision(this.waymarkReached, returnTileTypeAtColRow(col, row - 1)) == false) ? (0.01) : (0.99);
+		let bottom = (collision(this.waymarkReached, returnTileTypeAtColRow(col, row + 1)) == false) ? (0.01) : (0.99);
+		let left = (collision(this.waymarkReached, returnTileTypeAtColRow(col - 1, row)) == false) ? (0.01) : (0.99);
+		let right = (collision(this.waymarkReached, returnTileTypeAtColRow(col + 1, row)) == false) ? (0.01) : (0.99);
+
+		let topLeft = (collision(this.waymarkReached, returnTileTypeAtColRow(col - 1, row - 1)) == false) ? (0.01) : (0.99);
+		let topRight = (collision(this.waymarkReached, returnTileTypeAtColRow(col + 1, row - 1)) == false) ? (0.01) : (0.99);
+		let bottomLeft = (collision(this.waymarkReached, returnTileTypeAtColRow(col - 1, row + 1)) == false) ? (0.01) : (0.99);
+		let bottomRight = (collision(this.waymarkReached, returnTileTypeAtColRow(col + 1, row + 1)) == false) ? (0.01) : (0.99);
+
+		// for debugging
+		//
+		// 
+		// let hS = 20;
+		// let s = 40;
+		// if (top == 0.99) {
+		// 	colorRect(canvas.width / 2 - hS, 0, s, s, '#FF00FF');
+		// } else {
+		// 	colorRect(canvas.width / 2 - hS, 0, s, s, '#00FF00');
+		// }
+		// if (bottom == 0.99) {
+		// 	colorRect(canvas.width / 2 - hS, canvas.height - s, s, s, '#FF00FF');
+		// } else {
+		// 	colorRect(canvas.width / 2 - hS, canvas.height - s, s, s, '#00FF00');
+		// }
+		// if (left == 0.99) {
+		// 	colorRect(0, canvas.height / 2 - hS, s, s, '#FF00FF');
+		// } else {
+		// 	colorRect(0, canvas.height / 2 - hS, s, s, '#00FF00');
+		// }
+		// if (right == 0.99) {
+		// 	colorRect(canvas.width - s, canvas.height / 2 - hS, s, s, '#FF00FF');
+		// } else {
+		// 	colorRect(canvas.width - s, canvas.height / 2 - hS, s, s, '#00FF00');
+		// }
+		// if (topLeft == 0.99) {
+		// 	colorRect(0, 0, s, s, '#FF00FF');
+		// } else {
+		// 	colorRect(0, 0, s, s, '#00FF00');
+		// }
+		// if (topRight == 0.99) {
+		// 	colorRect(canvas.width - s, 0, s, s, '#FF00FF');
+		// } else {
+		// 	colorRect(canvas.width - s, 0, s, s, '#00FF00');
+		// }
+		// if (bottomLeft == 0.99) {
+		// 	colorRect(0, canvas.height - s, s, s, '#FF00FF');
+		// } else {
+		// 	colorRect(0, canvas.height - s, s, s, '#00FF00');
+		// }
+		// if (bottomRight == 0.99) {
+		// 	colorRect(canvas.width - s, canvas.height - s, s, s, '#FF00FF');
+		// } else {
+		// 	colorRect(canvas.width - s, canvas.height - s, s, s, '#00FF00');
+		// }
+
+		// document.getElementById("t").innerHTML = "top collision:           "+top;
+		// document.getElementById("b").innerHTML = "bottom collision:        "+bottom;
+		// document.getElementById("l").innerHTML = "left collision:          "+left;
+		// document.getElementById("r").innerHTML = "right collision:         "+right;
+		// document.getElementById("tl").innerHTML = "top-left collision:     "+topLeft;
+		// document.getElementById("tr").innerHTML = "top-right collision:    "+topRight;
+		// document.getElementById("bl").innerHTML = "bottom-left collision:  "+bottomLeft;
+		// document.getElementById("br").innerHTML = "bottom-right collision: "+bottomRight;
+
+		// console.log(top, bottom, left, right, topLeft, topRight, bottomLeft, bottomRight);
+
+		// for (frontDistToWall = 1; foundFrontDist != true; frontDistToWall++) { // while distance to front wall not found
+		// 	let front = row - frontDistToWall;
+		// 	if (returnTileTypeAtColRow(col, front) != 0) { // found collision
+		// 		foundFrontDist = true;
+		// 		frontDistToWall--;
+		// 	}
+		// }
+		// for (backDistToWall = 1; foundBackDist != true; backDistToWall++) { // while distance to back wall not found
+		// 	let back = row + backDistToWall;
+		// 	if (returnTileTypeAtColRow(col, back) != 0) { // found collision
+		// 		foundBackDist = true;
+		// 		backDistToWall--;
+		// 	}
+		// }
+		// for (leftDistToWall = 1; foundLeftDist != true; leftDistToWall++) { // while distance to back wall not found
+		// 	let left = col - leftDistToWall;
+		// 	if (returnTileTypeAtColRow(left, row) != 0) { // found collision
+		// 		foundLeftDist = true;
+		// 		leftDistToWall--;
+		// 	}
+		// }
+		// for (rightDistToWall = 1; foundRightDist != true; rightDistToWall++) { // while distance to back wall not found
+		// 	let right = col + rightDistToWall;
+		// 	if (returnTileTypeAtColRow(right, row) != 0) { // found collision
+		// 		foundRightDist = true;
+		// 		rightDistToWall--;
+		// 	}
+		// }
+		this.ang = (this.ang > 0) ? (this.ang % (2 * Math.PI)) : (this.ang % (-2 * Math.PI) + 2 * Math.PI);
+		// let angleDeg = Math.degrees(this.ang);
+		// frontDistToWall /= 20;
+		// backDistToWall /= 20;
+		// leftDistToWall /= 20;
+		// rightDistToWall /= 20;
 		// console.log(frontDistToWall, backDistToWall, leftDistToWall, rightDistToWall);
 
-		let prediction = this.brain.predict([adjustedAngle, frontDistToWall, backDistToWall, leftDistToWall, rightDistToWall])
+		// let prediction;
+
+		// console.log(angleDeg);
+
+		// if (angleDeg > 247.5 && angleDeg < 292.5) {
+		// 	// top
+		// 	prediction = this.brain.predict([top, topRight, right, bottomRight, bottom, bottomLeft, left, topLeft]);
+		// } else if (angleDeg > 292.5 && angleDeg < 337.5) {
+		// 	// top-right
+		// 	prediction = this.brain.predict([topRight, right, bottomRight, bottom, bottomLeft, left, topLeft, top]);
+		// } else if (angleDeg > 337.5 || angleDeg < 22.5) {
+		// 	// right
+		// 	prediction = this.brain.predict([right, bottomRight, bottom, bottomLeft, left, topLeft, top, topRight]);
+		// } else if (angleDeg > 22.5 && angleDeg < 67.5) {
+		// 	// bottom-right
+		// 	prediction = this.brain.predict([bottomRight, bottom, bottomLeft, left, topLeft, top, topRight, right]);
+		// } else if (angleDeg > 67.5 && angleDeg < 112.5) {
+		// 	// bottom
+		// 	prediction = this.brain.predict([bottom, bottomLeft, left, topLeft, top, topRight, right, bottomRight]);
+		// } else if (angleDeg > 112.5 && angleDeg < 157.5) {
+		// 	// bottom-left
+		// 	prediction = this.brain.predict([bottomLeft, left, topLeft, top, topRight, right, bottomRight, bottom]);
+		// } else if (angleDeg > 157.5 && angleDeg < 202.5) {
+		// 	// left
+		// 	prediction = this.brain.predict([left, topLeft, top, topRight, right, bottomRight, bottom, bottomLeft]);
+		// } else if (angleDeg > 202.5 && angleDeg < 247.5) {
+		// 	// top-left
+		// 	prediction = this.brain.predict([topLeft, top, topRight, right, bottomRight, bottom, bottomLeft, left]);
+		// }
+
+		let prediction = this.brain.predict([top, bottom, left, right, topLeft, topRight, bottomLeft, bottomRight, this.ang]);
 		this.keyHeldGas = prediction[0] > 0.5;
 		this.keyHeldBrakes = prediction[1] > 0.5;
 		this.keyHeldTurnLeft = prediction[2] > 0.5;
 		this.keyHeldTurnRight = prediction[3] > 0.5;
+
+		let i = prediction.indexOf(Math.max(prediction));
+
+		switch (i) {
+			case 0:
+				this.keyHeldGas = true;
+				break;
+			case 1:
+				this.keyHeldBrakes = true;
+				break;
+			case 2:
+				this.keyHeldTurnLeft = true;
+				break;
+			case 3:
+				this.keyTurnRight = true;
+		}
+
 
 		if (this.keyHeldGas) { // executed every frame the up arrow is held
 			this.speed += carGasRate;
