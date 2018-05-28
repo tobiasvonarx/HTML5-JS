@@ -1,6 +1,8 @@
 // Create the next generation
 function nextGeneration() {
-	console.log('nextGeneration called');
+	generation++;
+	console.log("Generation "+generation+", "+nextGenerationCars.length+" cars selected into gene pool");
+	// console.log('nextGeneration called');
 	showEndScreen = false;
 	// setup();
 

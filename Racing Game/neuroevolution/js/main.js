@@ -10,9 +10,13 @@ let showStartScreen = true; // sets to true on reload
 let showPauseScreen;
 let showEndScreen;
 
+const debug = false;
+
 // let blueCar = new carClass();
 // let greenCar = new carClass();
 let cars = [];
+let generation = 0;
+
 const carCount = 500;
 let nextGenerationCars = [];
 let foundNextGenCars = false;
@@ -94,12 +98,12 @@ function moveEverything() {
 		for (let i = 0; i < cars.length; i++) {
 			// cars[i].move()
 			cars[i].score--;
-			(cars[i].score < 0) ? cars.splice(i, 1): cars[i].move();
+			(cars[i].score < 0) ? cars.splice(i, 1) : cars[i].move();
 		}
 
 		// how many cars to go to next gen
 		if (cars.length <= numOfBestCars && !foundNextGenCars) {
-			console.log(cars.length, 'reached');
+			// console.log(cars.length, 'reached');
 			nextGenerationCars = cars.slice();
 			foundNextGenCars = true;
 		}

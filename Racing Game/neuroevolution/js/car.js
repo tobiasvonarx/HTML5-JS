@@ -33,7 +33,7 @@ function carClass(brain) {
 		this.brain = brain.copy();
 		this.brain.mutate(mutate);
 	} else {
-		this.brain = new NeuralNetwork(9, 7, 4);
+		this.brain = new NeuralNetwork(16, 8, 4);
 	}
 
 	// booleans for steering
@@ -105,6 +105,8 @@ function carClass(brain) {
 			this.positionIndexes.push(index);
 			let tileScore = tileScoreGrid[index];
 			this.score += tileScore;
+		} else {
+			this.score--;
 		}
 	}
 
@@ -135,61 +137,17 @@ function carClass(brain) {
 		// let tile = returnTileTypeAtColRow(col, row);
 		//console.log(tile);
 
-		let top = (collision(this.waymarkReached, returnTileTypeAtColRow(col, row - 1)) == false) ? (0.01) : (0.99);
-		let bottom = (collision(this.waymarkReached, returnTileTypeAtColRow(col, row + 1)) == false) ? (0.01) : (0.99);
-		let left = (collision(this.waymarkReached, returnTileTypeAtColRow(col - 1, row)) == false) ? (0.01) : (0.99);
-		let right = (collision(this.waymarkReached, returnTileTypeAtColRow(col + 1, row)) == false) ? (0.01) : (0.99);
+		let top = (collision(this.waymarkReached, returnTileTypeAtColRow(col, row - 1)) == false) ? (0) : (1);
+		let bottom = (collision(this.waymarkReached, returnTileTypeAtColRow(col, row + 1)) == false) ? (0) : (1);
+		let left = (collision(this.waymarkReached, returnTileTypeAtColRow(col - 1, row)) == false) ? (0) : (1);
+		let right = (collision(this.waymarkReached, returnTileTypeAtColRow(col + 1, row)) == false) ? (0) : (1);
 
-		let topLeft = (collision(this.waymarkReached, returnTileTypeAtColRow(col - 1, row - 1)) == false) ? (0.01) : (0.99);
-		let topRight = (collision(this.waymarkReached, returnTileTypeAtColRow(col + 1, row - 1)) == false) ? (0.01) : (0.99);
-		let bottomLeft = (collision(this.waymarkReached, returnTileTypeAtColRow(col - 1, row + 1)) == false) ? (0.01) : (0.99);
-		let bottomRight = (collision(this.waymarkReached, returnTileTypeAtColRow(col + 1, row + 1)) == false) ? (0.01) : (0.99);
+		let topLeft = (collision(this.waymarkReached, returnTileTypeAtColRow(col - 1, row - 1)) == false) ? (0) : (1);
+		let topRight = (collision(this.waymarkReached, returnTileTypeAtColRow(col + 1, row - 1)) == false) ? (0) : (1);
+		let bottomLeft = (collision(this.waymarkReached, returnTileTypeAtColRow(col - 1, row + 1)) == false) ? (0) : (1);
+		let bottomRight = (collision(this.waymarkReached, returnTileTypeAtColRow(col + 1, row + 1)) == false) ? (0) : (1);
 
-		// for debugging
-		//
-		// 
-		// let hS = 20;
-		// let s = 40;
-		// if (top == 0.99) {
-		// 	colorRect(canvas.width / 2 - hS, 0, s, s, '#FF00FF');
-		// } else {
-		// 	colorRect(canvas.width / 2 - hS, 0, s, s, '#00FF00');
-		// }
-		// if (bottom == 0.99) {
-		// 	colorRect(canvas.width / 2 - hS, canvas.height - s, s, s, '#FF00FF');
-		// } else {
-		// 	colorRect(canvas.width / 2 - hS, canvas.height - s, s, s, '#00FF00');
-		// }
-		// if (left == 0.99) {
-		// 	colorRect(0, canvas.height / 2 - hS, s, s, '#FF00FF');
-		// } else {
-		// 	colorRect(0, canvas.height / 2 - hS, s, s, '#00FF00');
-		// }
-		// if (right == 0.99) {
-		// 	colorRect(canvas.width - s, canvas.height / 2 - hS, s, s, '#FF00FF');
-		// } else {
-		// 	colorRect(canvas.width - s, canvas.height / 2 - hS, s, s, '#00FF00');
-		// }
-		// if (topLeft == 0.99) {
-		// 	colorRect(0, 0, s, s, '#FF00FF');
-		// } else {
-		// 	colorRect(0, 0, s, s, '#00FF00');
-		// }
-		// if (topRight == 0.99) {
-		// 	colorRect(canvas.width - s, 0, s, s, '#FF00FF');
-		// } else {
-		// 	colorRect(canvas.width - s, 0, s, s, '#00FF00');
-		// }
-		// if (bottomLeft == 0.99) {
-		// 	colorRect(0, canvas.height - s, s, s, '#FF00FF');
-		// } else {
-		// 	colorRect(0, canvas.height - s, s, s, '#00FF00');
-		// }
-		// if (bottomRight == 0.99) {
-		// 	colorRect(canvas.width - s, canvas.height - s, s, s, '#FF00FF');
-		// } else {
-		// 	colorRect(canvas.width - s, canvas.height - s, s, s, '#00FF00');
-		// }
+
 
 		// document.getElementById("t").innerHTML = "top collision:           "+top;
 		// document.getElementById("b").innerHTML = "bottom collision:        "+bottom;
@@ -231,7 +189,7 @@ function carClass(brain) {
 		// 	}
 		// }
 		this.ang = (this.ang > 0) ? (this.ang % (2 * Math.PI)) : (this.ang % (-2 * Math.PI) + 2 * Math.PI);
-		// let angleDeg = Math.degrees(this.ang);
+		let angleDeg = Math.degrees(this.ang);
 		// frontDistToWall /= 20;
 		// backDistToWall /= 20;
 		// leftDistToWall /= 20;
@@ -240,35 +198,76 @@ function carClass(brain) {
 
 		// let prediction;
 
-		// console.log(angleDeg);
 
-		// if (angleDeg > 247.5 && angleDeg < 292.5) {
-		// 	// top
-		// 	prediction = this.brain.predict([top, topRight, right, bottomRight, bottom, bottomLeft, left, topLeft]);
-		// } else if (angleDeg > 292.5 && angleDeg < 337.5) {
-		// 	// top-right
-		// 	prediction = this.brain.predict([topRight, right, bottomRight, bottom, bottomLeft, left, topLeft, top]);
-		// } else if (angleDeg > 337.5 || angleDeg < 22.5) {
-		// 	// right
-		// 	prediction = this.brain.predict([right, bottomRight, bottom, bottomLeft, left, topLeft, top, topRight]);
-		// } else if (angleDeg > 22.5 && angleDeg < 67.5) {
-		// 	// bottom-right
-		// 	prediction = this.brain.predict([bottomRight, bottom, bottomLeft, left, topLeft, top, topRight, right]);
-		// } else if (angleDeg > 67.5 && angleDeg < 112.5) {
-		// 	// bottom
-		// 	prediction = this.brain.predict([bottom, bottomLeft, left, topLeft, top, topRight, right, bottomRight]);
-		// } else if (angleDeg > 112.5 && angleDeg < 157.5) {
-		// 	// bottom-left
-		// 	prediction = this.brain.predict([bottomLeft, left, topLeft, top, topRight, right, bottomRight, bottom]);
-		// } else if (angleDeg > 157.5 && angleDeg < 202.5) {
-		// 	// left
-		// 	prediction = this.brain.predict([left, topLeft, top, topRight, right, bottomRight, bottom, bottomLeft]);
-		// } else if (angleDeg > 202.5 && angleDeg < 247.5) {
-		// 	// top-left
-		// 	prediction = this.brain.predict([topLeft, top, topRight, right, bottomRight, bottom, bottomLeft, left]);
-		// }
+		let facingTop = (angleDeg > 247.5 && angleDeg < 292.5) ? 1 : 0;
+		let facingTopRight = (angleDeg > 292.5 && angleDeg < 337.5) ? 1 : 0;
+		let facingRight = (angleDeg > 337.5 || angleDeg < 22.5) ? 1 : 0;
+		let facingBottomRight = (angleDeg > 22.5 && angleDeg < 67.5) ? 1 : 0;
+		let facingBottom = (angleDeg > 67.5 && angleDeg < 112.5) ? 1 : 0;
+		let facingBottomLeft = (angleDeg > 112.5 && angleDeg < 157.5) ? 1 : 0;
+		let facingLeft = (angleDeg > 157.5 && angleDeg < 202.5) ? 1 : 0;
+		let facingTopLeft = (angleDeg > 202.5 && angleDeg < 247.5) ? 1 : 0;
+		
+		// for debugging
+		if (debug) {
+			// console.log(angleDeg);
 
-		let prediction = this.brain.predict([top, bottom, left, right, topLeft, topRight, bottomLeft, bottomRight, this.ang]);
+			let hS = 20;
+			let s = 40;
+			if (facingTop == 1) {
+				colorRect(canvas.width / 2 - hS, 0, s, s, '#FF00FF');
+			} else {
+				colorRect(canvas.width / 2 - hS, 0, s, s, '#00FF00');
+			}
+			if (facingBottom == 1) {
+				colorRect(canvas.width / 2 - hS, canvas.height - s, s, s, '#FF00FF');
+			} else {
+				colorRect(canvas.width / 2 - hS, canvas.height - s, s, s, '#00FF00');
+			}
+			if (facingLeft == 1) {
+				colorRect(0, canvas.height / 2 - hS, s, s, '#FF00FF');
+			} else {
+				colorRect(0, canvas.height / 2 - hS, s, s, '#00FF00');
+			}
+			if (facingRight == 1) {
+				colorRect(canvas.width - s, canvas.height / 2 - hS, s, s, '#FF00FF');
+			} else {
+				colorRect(canvas.width - s, canvas.height / 2 - hS, s, s, '#00FF00');
+			}
+			if (facingTopLeft == 1) {
+				colorRect(0, 0, s, s, '#FF00FF');
+			} else {
+				colorRect(0, 0, s, s, '#00FF00');
+			}
+			if (facingTopRight == 1) {
+				colorRect(canvas.width - s, 0, s, s, '#FF00FF');
+			} else {
+				colorRect(canvas.width - s, 0, s, s, '#00FF00');
+			}
+			if (facingBottomLeft == 1) {
+				colorRect(0, canvas.height - s, s, s, '#FF00FF');
+			} else {
+				colorRect(0, canvas.height - s, s, s, '#00FF00');
+			}
+			if (facingBottomRight == 1) {
+				colorRect(canvas.width - s, canvas.height - s, s, s, '#FF00FF');
+			} else {
+				colorRect(canvas.width - s, canvas.height - s, s, s, '#00FF00');
+			}
+
+			document.getElementById("t").innerHTML = "top:           "+top+" "+facingTop;
+			document.getElementById("b").innerHTML = "bottom:        "+bottom+" "+facingBottom;
+			document.getElementById("l").innerHTML = "left:          "+left+" "+facingLeft;
+			document.getElementById("r").innerHTML = "right:         "+right+" "+facingRight;
+			document.getElementById("tl").innerHTML = "top-left:     "+topLeft+" "+facingTopLeft;
+			document.getElementById("tr").innerHTML = "top-right:    "+topRight+" "+facingTopRight;
+			document.getElementById("bl").innerHTML = "bottom-left:  "+bottomLeft+" "+facingBottomLeft;
+			document.getElementById("br").innerHTML = "bottom-right: "+bottomRight+" "+facingBottomRight;
+		}
+
+		let prediction = this.brain.predict([top, bottom, left, right, topLeft, topRight, bottomLeft, bottomRight,
+											 facingTop, facingBottom, facingLeft, facingRight,
+											 facingTopLeft, facingTopRight, facingBottomLeft, facingBottomRight]);
 		this.keyHeldGas = prediction[0] > 0.5;
 		this.keyHeldBrakes = prediction[1] > 0.5;
 		this.keyHeldTurnLeft = prediction[2] > 0.5;
