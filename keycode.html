@@ -4,11 +4,17 @@
 	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 	<meta content="utf-8" http-equiv="encoding">
 	<title>JS Keycodes</title>
-</head>
-<canvas id="canvas" width="200" height="200" tabindex=0></canvas>
-<script>
-	window.addEventListener("keydown", function(ev){
-          console.log(ev.keyCode);
-}, true);
-</script>
+	<script>
+		window.addEventListener("keydown", function(ev){
+	        document.getElementById("keyCode").innerHTML = (ev.key!=' ') ? (ev.key+" => "+ev.keyCode) : ("Space => "+ev.keyCode);
+		}, true);
+	</script>
+	<style>
+		h1 {
+			font-family: arial 20px;
+		}
+	</style>
+<body>
+	<h1 id="keyCode"></h1>
+</body>
 </html>
