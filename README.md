@@ -37,3 +37,5 @@ Suggestions for improving my code quality would be appreciated greatly :)
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Tic%20Tac%20Toe/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Tic%20Tac%20Toe)
 ### Warrior Adventures
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Warrior%20Adventures/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Warrior%20Adventures)
+### Polynomial Regression
+[Demo](https://tobiasvonarx.github.io/HTML5-JS/Polynomial%20Regression/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Polynomial%20Regression)
