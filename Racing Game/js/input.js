@@ -11,6 +11,9 @@ function setupInput(){
 	//keyboard event detection
 	window.addEventListener('keydown', handleKeyDown);
 	window.addEventListener('keyup', handleKeyUp);
+
+	//mouse input detection
+	window.addEventListener('mousedown', handleMouseDown);
 	
 	blueCar.setupKeys(keyW,keyS,keyA,keyD);
 	greenCar.setupKeys(keyUpArrow,keyDownArrow,keyLeftArrow,keyRightArrow);
@@ -78,4 +81,13 @@ function handleKeyDown(evt){
 function handleKeyUp(evt){
 	keyInput(blueCar,false,evt);
 	keyInput(greenCar,false,evt);
+}
+
+function handleMouseDown(evt) {
+	if(showStartScreen) {
+		setup();
+		showStartScreen = false;
+	} else if(showPauseScreen) {
+		showPauseScreen = false;
+	}
 }

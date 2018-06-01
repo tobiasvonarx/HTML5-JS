@@ -1,5 +1,6 @@
 function setupInput() {
 	window.addEventListener('keydown', handleKeyDown);
+	window.addEventListener('mousedown', handleMouseDown);
 }
 
 function handleKeyDown(evt) {
@@ -34,5 +35,14 @@ function handleKeyDown(evt) {
 				setup();
 			}
 			break;
+	}
+}
+
+function handleMouseDown(evt) {
+	if (showStartScreen) {
+		setup();
+		showStartScreen = false;
+	} else if (showPauseScreen) {
+		showPauseScreen = false;
 	}
 }
