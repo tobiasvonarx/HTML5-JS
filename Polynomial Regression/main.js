@@ -4,6 +4,7 @@ let y_vals = [];
 let a, b, c, d;
 
 let w, h;
+let coefficients;
 
 const learningRate = 0.15;
 const optimizer = tf.train.adam(learningRate);
@@ -34,23 +35,12 @@ function loss(pred, labels) {
 
 function predict(x) {
 	const xs = tf.tensor1d(x);
-	let ys;
-	// y = ax + b;
-	if (poly_deg == 1) {
-		ys = xs.mul(a).add(b);
-	}
-	// y = ax^2 + bx + c
-	else if (poly_deg == 2) {
-		ys = xs.square().mul(a)
-			.add(xs.mul(b))
-			.add(c)
-	}
-	// y = ax^3 + bx^2 + cx + d
-	else if (poly_deg == 3) {
-		ys = xs.pow(tf.scalar(3)).mul(a)
-			.add(xs.square().mul(b))
-			.add(xs.mul(c))
-			.add(d)
+	let ys = tf.scalar(0);
+
+	coefficients = [a, b, c, d];
+
+	for (let i = 0; i <= poly_deg; i++) {
+		ys = ys.add(xs.pow(tf.scalar(i)).mul(coefficients[i]));
 	}
 
 	return ys;
