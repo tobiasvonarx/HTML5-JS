@@ -88,7 +88,7 @@ function draw() {
 
 	const curveX = [];
 
-	for (let x = -1; x < 1.01; x += 0.05) {
+	for (let x = -1; x < 1.01; x += 0.025) {
 		curveX.push(x);
 	}
 
