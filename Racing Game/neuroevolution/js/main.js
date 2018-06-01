@@ -1,7 +1,7 @@
-// Last updated 20180428
 // TODO:
 // Pool selection algorithm for genetic algorithm still has upward potential
 // speed up reinforcement learning process
+// multiplayer
 
 let canvas = document.getElementById('gameCanvas');
 let canvasContext = canvas.getContext('2d');
