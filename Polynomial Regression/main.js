@@ -3,6 +3,8 @@ let y_vals = [];
 
 let a, b, c, d;
 
+let w, h;
+
 const learningRate = 0.15;
 const optimizer = tf.train.adam(learningRate);
 
@@ -10,10 +12,14 @@ let deg_slider;
 let poly_deg;
 
 function setup() {
-	createCanvas(600, 400);
+	w = window.innerWidth-20;
+	h = window.innerHeight-20;
+
+	createCanvas(w, h);
 
 	deg_slider = createSlider(10, 30, 10);
-	deg_slider.position(10, 420);
+	deg_slider.position(20, 40);
+
 	poly_deg = 0;
 
 	a = tf.variable(tf.scalar(random(-1, 1)));
@@ -51,9 +57,9 @@ function predict(x) {
 }
 
 function mousePressed() {
-	if (mouseX < 600 && mouseY < 400) {
-		let x = map(mouseX, 0, width, -1, 1);
-		let y = map(mouseY, 0, height, 1, -1);
+	if ((mouseX < w && mouseY < h) && (mouseX > 160 || mouseY > 60)) {
+		let x = map(mouseX, 0, w, -1, 1);
+		let y = map(mouseY, 0, h, 1, -1);
 		x_vals.push(x);
 		y_vals.push(y);
 	}
@@ -61,11 +67,9 @@ function mousePressed() {
 
 function draw() {
 	background(0);
-	strokeWeight(0.5);
-	fill(200);
+
 	// polynomial degree gets taken from slider value
 	poly_deg = round(deg_slider.value() / 10);
-	text('polynomial degree: ' + poly_deg, 20, 20);
 
 	tf.tidy(() => {
 		if (x_vals.length > 0) {
@@ -74,11 +78,11 @@ function draw() {
 		}
 	});
 
-	stroke(255);
+	stroke('rgba(255, 255, 255, 0.25)');
 	strokeWeight(8);
 	for (let i = 0; i < x_vals.length; i++) {
-		let px = map(x_vals[i], -1, 1, 0, width);
-		let py = map(y_vals[i], -1, 1, height, 0);
+		let px = map(x_vals[i], -1, 1, 0, w);
+		let py = map(y_vals[i], -1, 1, h, 0);
 		point(px, py);
 	}
 
@@ -93,19 +97,16 @@ function draw() {
 	ys.dispose();
 
 	noFill();
+	stroke('rgba(255, 255, 255, 0.75)');
 	beginShape();
 	for (let i = 0; i < curveX.length; i++) {
-		let x = map(curveX[i], -1, 1, 0, width);
-		let y = map(curveY[i], -1, 1, height, 0);
+		let x = map(curveX[i], -1, 1, 0, w);
+		let y = map(curveY[i], -1, 1, h, 0);
 		vertex(x, y);
 	}
 	endShape();
 
-	// let x1 = map(curveX[0], -1, 1, 0, width);
-	// let x2 = map(curveX[1], -1, 1, 0, width);
-
-	// let y1 = map(curveY[0], -1, 1, height, 0);
-	// let y2 = map(curveY[1], -1, 1, height, 0);
-
-	// line(x1, y1, x2, y2);
+	strokeWeight(0.1);
+	fill(200);
+	text('polynomial degree: ' + poly_deg, 20, 20);
 }
