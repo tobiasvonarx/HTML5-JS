@@ -5,6 +5,8 @@ Suggestions for improving my code quality would be appreciated greatly :)
 
 ### Archemedian Spiral Fractal
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Archemedian%20Spiral%20Fractal/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Archemedian%20Spiral%20Fractal)
+### Audio Sampler
+[Demo](https://tobiasvonarx.github.io/HTML5-JS/Audio%20Sampler/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Audio%20Sampler/)
 ### Brick Breaker
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Brick%20Breaker/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Brick%20Breaker)
 ### Demos for concepts
@@ -18,24 +20,24 @@ Suggestions for improving my code quality would be appreciated greatly :)
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Demos%20for%20concepts/scrolling%20camera.html) | [Source](https://github.com/tobiasvonarx/HTML5-JS/blob/master/Demos%20for%20concepts/scrolling%20camera.html)
 ### Fractal tree
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Fractal%20Tree/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Fractal%20Tree)
-### Mandelbrot fractal
+### Mandelbrot Fractal
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Mandelbrot%20Fractal/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Mandelbrot%20Fractal)
 ### Matrix
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Matrix/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Matrix)
+### Polynomial Regression
+[Demo](https://tobiasvonarx.github.io/HTML5-JS/Polynomial%20Regression/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Polynomial%20Regression)
 ### Pong
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Pong/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Pong)
-### Pythagoras tree fractal
+### Pythagoras Tree Fractal
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Pythagoras%20Tree%20Fractal/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Pythagoras%20Tree%20Fractal)
-### Racing game
+### Racing Game
 ##### 2-player
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Racing%20Game/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Racing%20Game)
 ##### Neuroevolution simulation
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Racing%20Game/neuroevolution/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Racing%20Game/neuroevolution)
 ### Snake
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Snake/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Snake)
-### Tic tac toe
+### Tic Tac Toe
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Tic%20Tac%20Toe/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Tic%20Tac%20Toe)
 ### Warrior Adventures
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Warrior%20Adventures/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Warrior%20Adventures)
-### Polynomial Regression
-[Demo](https://tobiasvonarx.github.io/HTML5-JS/Polynomial%20Regression/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Polynomial%20Regression)
