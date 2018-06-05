@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Tic Tac Toe</title>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:700" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<table>
+		<tr>
+			<td class="cell" id="0"></td>
+			<td class="cell" id="1"></td>
+			<td class="cell" id="2"></td>
+			<td class="cell" id="3"></td>
+			<td class="cell" id="4"></td>
+		</tr>
+		<tr>
+			<td class="cell" id="5"></td>
+			<td class="cell" id="6"></td>
+			<td class="cell" id="7"></td>
+			<td class="cell" id="8"></td>
+			<td class="cell" id="9"></td>
+		</tr>
+		<tr>
+			<td class="cell" id="10"></td>
+			<td class="cell" id="11"></td>
+			<td class="cell" id="12"></td>
+			<td class="cell" id="13"></td>
+			<td class="cell" id="14"></td>
+		</tr>
+		<tr>
+			<td class="cell" id="15"></td>
+			<td class="cell" id="16"></td>
+			<td class="cell" id="17"></td>
+			<td class="cell" id="18"></td>
+			<td class="cell" id="19"></td>
+		</tr>
+		<tr>
+			<td class="cell" id="20"></td>
+			<td class="cell" id="21"></td>
+			<td class="cell" id="22"></td>
+			<td class="cell" id="23"></td>
+			<td class="cell" id="24"></td>
+		</tr>
+	</table>
+	<div class="endgame">
+		<div class="text"></div>
+	</div>
+	<!--<button onClick="startGame()">Replay</button>-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+	<script src="script.js"></script>
+	<p id="winner" style="text-align: center; font-family: 'Open Sans', sans-serif; margin-top: 100px;"></p>
+</body>
+</html>
