@@ -57,7 +57,7 @@ function setup() {
 	song.play();
 
 	// initialize fourier transform algorithm for the two input sources
-	fftMic = new p5.FFT(0.8, 128);
+	fftMic = new p5.FFT(0.9, 128);
 	fftMic.setInput(mic);
 
 	fftSong = new p5.FFT(0.9, 128);
