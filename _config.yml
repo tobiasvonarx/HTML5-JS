@@ -1,2 +1,4 @@
 theme: jekyll-theme-minimal
-exclude: ['/Tic%20Tac%20Toe/sockets/node_modules']
+title: HTML5-JS | tobiasvonarx
+exclude: ['node_modules']
+baseurl: /
