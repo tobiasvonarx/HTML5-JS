@@ -209,7 +209,7 @@ function carClass(brain) {
 		let facingTopLeft = (angleDeg > 202.5 && angleDeg < 247.5) ? 1 : 0;
 		
 		// for debugging
-		if (debug) {
+		if (debugGraphics) {
 			// console.log(angleDeg);
 
 			let hS = 20;

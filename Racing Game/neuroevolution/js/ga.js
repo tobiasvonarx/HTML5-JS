@@ -1,8 +1,20 @@
+function log(logWord, gen, text, num) {console.log("%c["+logWord+" "+gen+"]  \t"+"%c"+text+"\t\t\t\t\t\t"+"%c"+num,"font-weight: bold; color: #2f2f2f;","font-weight: lighter;","color: #029d0d")};
 // Create the next generation
 function nextGeneration() {
-	generation++;
-	console.log("Generation "+generation+", "+nextGenerationCars.length+" cars selected into gene pool");
-	// console.log('nextGeneration called');
+	if (debugLog) {
+		// log highscores of previous generation
+		log("Generation",generation, "highest fitness of this generation", bestCurrentFitness);
+		log("Generation",generation, "highest fitness overall           ", bestEverFitness);
+		log('','','','');
+
+		generation++;
+
+		// introduce new generation of cars
+		// log("Generation",generation, "cars selected into gene pool      ", nextGenerationCars.length);
+	} else {
+		generation++;
+	}
+
 	showEndScreen = false;
 	// setup();
 
@@ -10,6 +22,7 @@ function nextGeneration() {
 	cars = generate();
 
 	foundNextGenCars = false;
+	bestCurrentFitness = 0;
 
 }
 

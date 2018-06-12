@@ -41,7 +41,10 @@ function loadImages() {
 			file: 'blueCarPicIdle.png'
 		},
 		// {let: greenCarPicBrake,file:'greenCarPicBrake.png'},
-		// {let: greenCarPicIdle,file:'greenCarPicIdle.png'},
+		// {
+		// 	let: greenCarPicIdle,
+		// 	file: 'greenCarPicIdle.png'
+		// },
 		{
 			trackType: wallTile,
 			file: 'track_wall.png'

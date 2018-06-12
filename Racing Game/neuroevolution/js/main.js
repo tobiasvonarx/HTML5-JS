@@ -10,7 +10,9 @@ let showStartScreen = true; // sets to true on reload
 let showPauseScreen;
 let showEndScreen;
 
-const debug = false;
+const debugGraphics = false;
+const debugLog = true;
+const logPath = 'log.txt';
 
 // let blueCar = new carClass();
 // let greenCar = new carClass();
@@ -21,6 +23,8 @@ const carCount = 500;
 let nextGenerationCars = [];
 let foundNextGenCars = false;
 const numOfBestCars = 10;
+let bestEverFitness = 0;
+let bestCurrentFitness = 0;
 
 function setup() {
 	// showStartScreen = true; does not activate start screen on every other reset than start, see variable assignment above
@@ -32,7 +36,7 @@ function setup() {
 
 	for (let i = 0; i < carCount; i++) {
 		cars[i] = new carClass();
-		let pic = blueCarPicIdle;
+		const pic = blueCarPicIdle;
 		cars[i].reset(firstPlayerStartTile, pic, pic, 'car');
 	}
 
@@ -53,7 +57,9 @@ function loadLevel(level) {
 }
 
 window.onload = function() {
-	console.log('Hello World');
+	console.log('%cNeuroevolution'+ '%c|' + '%cRacing Game', 'background: #2f2f2f; font-weight: lighter; color: #029d0d; font-size: xx-large;','background: #2f2f2f; font-weight: bolder; color: #9d0292; font-size: xx-large;','background: #2f2f2f; font-weight: lighter; color: #029d0d; font-size: xx-large;');
+	console.log('%cgithub.com/tobiasvonarx\n\n\n','color: #2f2f2f; font-size: medium;');
+
 	// setup input event listeners
 	setupInput();
 
@@ -82,6 +88,7 @@ function loadingScreen() {
 	drawText('Music by Schlengnon', 15, 15, 'begin', 'white', '5px verdana');
 	drawText('Loading...', canvas.width / 2, canvas.height / 2, 'center', 'white', '30px verdana');
 }
+
 function moveEverything() {
 	// console.log(cars.length);
 
@@ -93,12 +100,25 @@ function moveEverything() {
 			nextGeneration();
 		}
 
+		// const pic = greenCarPicIdle;
+
 		// console.log(cars.length)
 
 		for (let i = 0; i < cars.length; i++) {
 			// cars[i].move()
 			cars[i].score--;
-			(cars[i].score < 0) ? cars.splice(i, 1) : cars[i].move();
+
+			if (cars[i].score > bestCurrentFitness) {
+				bestCurrentFitness = cars[i].score;
+				// cars[i].imageIdle = greenCarPicIdle;
+				// cars[i].imageBrake = greenCarPicIdle;
+
+				if (cars[i].score > bestEverFitness) {
+					bestEverFitness = cars[i].score;
+				}
+			}
+
+			(cars[i].score < 0) ? cars.splice(i, 1): cars[i].move();
 		}
 
 		// how many cars to go to next gen
