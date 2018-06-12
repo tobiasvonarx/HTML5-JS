@@ -1,1 +1,2 @@
 theme: jekyll-theme-minimal
+exclude: ['/Tic%20Tac%20Toe/sockets/node_modules']
