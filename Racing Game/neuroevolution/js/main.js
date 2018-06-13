@@ -10,8 +10,8 @@ let showStartScreen = true; // sets to true on reload
 let showPauseScreen;
 let showEndScreen;
 
-const debugGraphics = false;
-const debugLog = true;
+let debugGraphics = false;
+let debugLog = true;
 const logPath = 'log.txt';
 
 // let blueCar = new carClass();
