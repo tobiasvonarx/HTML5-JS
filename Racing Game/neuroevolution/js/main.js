@@ -19,7 +19,7 @@ const logPath = 'log.txt';
 let cars = [];
 let generation = 0;
 
-const carCount = 500;
+let carCount = 500;
 let nextGenerationCars = [];
 let foundNextGenCars = false;
 const numOfBestCars = 10;
