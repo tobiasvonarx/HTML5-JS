@@ -60,6 +60,10 @@ window.onload = function() {
 	console.log('%cNeuroevolution'+ '%c|' + '%cRacing Game', 'background: #2f2f2f; font-weight: lighter; color: #029d0d; font-size: xx-large;','background: #2f2f2f; font-weight: bolder; color: #9d0292; font-size: xx-large;','background: #2f2f2f; font-weight: lighter; color: #029d0d; font-size: xx-large;');
 	console.log('%cgithub.com/tobiasvonarx\n\n\n','color: #2f2f2f; font-size: medium;');
 
+	if (debugGraphics) {
+		carCount = 1;
+	}
+	
 	// setup input event listeners
 	setupInput();
 
