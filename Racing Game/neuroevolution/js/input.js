@@ -4,7 +4,7 @@ function setupInput() {
 }
 
 function handleKeyDown(evt) {
-	switch (event.keyCode) {
+	switch (evt.keyCode) {
 		case 32: // SPACE or ENTER
 			if (showStartScreen) {
 				setup();
