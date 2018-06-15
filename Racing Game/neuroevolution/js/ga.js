@@ -1,4 +1,4 @@
-function log(logWord, gen, text, num) {console.log("%c["+logWord+" "+gen+"]:\t"+"%c"+text+"\t"+"%c"+num,"font-weight: bold; color: #2f2f2f;","font-weight: lighter;","color: #029d0d")};
+function log(logWord, gen, text, num) {console.log("%c["+logWord+" "+gen+"]:  \t"+"%c"+text+"\t"+"%c"+num,"font-weight: bold; color: #2f2f2f;","font-weight: lighter;","color: #029d0d")};
 // Create the next generation
 function nextGeneration() {
 	if (debugLog) {
