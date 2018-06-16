@@ -286,7 +286,7 @@ function carClass(brain) {
 				this.keyHeldTurnLeft = true;
 				break;
 			case 3:
-				this.keyTurnRight = true;
+				this.keyHeldTurnRight = true;
 		}
 
 
