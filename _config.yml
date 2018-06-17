@@ -1,4 +1,3 @@
 theme: jekyll-theme-minimal
-title: HTML5-JS | tobiasvonarx
 exclude: ['node_modules']
 baseurl: /
