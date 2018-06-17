@@ -51,10 +51,12 @@ function startGame() {
 }
 
 function multiplayer() {
-	socket.emit('roomConnection', {id: roomID});
+	socket.emit('roomConnection', {
+		id: roomID
+	});
 	socket.on('roomConnection', (data) => {
 		// if (data.id == roomID) {
-			document.getElementById('debug').innerText = 'Room ID: ' + room.id + ' Player found';
+		document.getElementById('debug').innerText = 'Room ID: ' + room.id + ' Player found';
 		// }
 	})
 }
@@ -84,7 +86,7 @@ function turn(squareId, player) {
 function gameCompleted(id) {
 	let player = origBoard[id];
 	let rCol = [4, 9, 14, 19, 24];
-	let lCol = [0, 5, 10, 15, 20];
+	let lCol = [0, 5, 10, 15, 20, 25];
 	for (let i = 0; i < 25; i++) {
 		//BOTTOM LEFT DIAGONALS
 		let leftDiagonalA = i + cellCountX - 1;
@@ -151,19 +153,19 @@ function gameCompleted(id) {
 			console.log(leftDiagonalA + ' ' + leftDiagonalB + ' ' + leftDiagonalC);
 			//check for RIGHT DIAGONAL overshoot
 			//bottom overshoot with right diagonal
-			if (rightDiagonalA > 24) {
+			if (rightDiagonalA > 25) {
 				rightDiagonalA -= cellCountX * cellCountY;
 				rightDiagonalB = rightDiagonalA + cellCountX + 1;
 				rightDiagonalC = rightDiagonalB + cellCountX + 1;
-			} else if (rightDiagonalB > 24) {
+			} else if (rightDiagonalB > 25) {
 				rightDiagonalB -= cellCountX * cellCountY;
 				rightDiagonalC = rightDiagonalB + cellCountX + 1;
-			} else if (rightDiagonalC > 24) {
+			} else if (rightDiagonalC > 25) {
 				rightDiagonalC -= cellCountX * cellCountY;
 			}
 			//check if a diagonal or the cell itself is on a corner here
 			if (lCol.includes(rightDiagonalA) || lCol.includes(rightDiagonalB) || lCol.includes(rightDiagonalC)) {
-				console.log('edge rightdiagonal');
+				// console.log('edge rightdiagonal');
 				//check left edges before corners
 				if (lCol.includes(rightDiagonalA)) {
 					rightDiagonalA -= cellCountX;
