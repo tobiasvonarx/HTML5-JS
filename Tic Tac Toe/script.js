@@ -130,6 +130,17 @@ function gameCompleted(id) {
 				leftDiagonalC = 3;
 			}
 
+			if (leftDiagonalA > 24) {
+				leftDiagonalA -= cellCountX * cellCountY;
+				leftDiagonalB = leftDiagonalA + cellCountX - 1;
+				leftDiagonalC = leftDiagonalB + cellCountX - 1;
+			} else if (leftDiagonalB > 24) {
+				leftDiagonalB -= cellCountX * cellCountY;
+				leftDiagonalC = leftDiagonalB + cellCountX - 1;
+			} else if (leftDiagonalC > 24) {
+				leftDiagonalC -= cellCountX * cellCountY;
+			}
+
 			console.log('cell: ', i);
 			console.log('left diagonals are: ');
 			console.log(leftDiagonalA + ' ' + leftDiagonalB + ' ' + leftDiagonalC);
@@ -182,7 +193,18 @@ function gameCompleted(id) {
 				rightDiagonalC = 0;
 			}
 
-			// edge case: see github.com/tobiasvonarx/HTML5-JS/issues/4
+			if (rightDiagonalA > 25) {
+				rightDiagonalA -= cellCountX * cellCountY;
+				rightDiagonalB = rightDiagonalA + cellCountX + 1;
+				rightDiagonalC = rightDiagonalB + cellCountX + 1;
+			} else if (rightDiagonalB > 25) {
+				rightDiagonalB -= cellCountX * cellCountY;
+				rightDiagonalC = rightDiagonalB + cellCountX + 1;
+			} else if (rightDiagonalC > 25) {
+				rightDiagonalC -= cellCountX * cellCountY;
+			}
+
+			// edge cases: see github.com/tobiasvonarx/HTML5-JS/issues/4
 
 			console.log('right diagonals are: ');
 			console.log(rightDiagonalA + ' ' + rightDiagonalB + ' ' + rightDiagonalC);
