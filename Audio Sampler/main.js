@@ -3,7 +3,6 @@ let fftMic, fftSong;
 let toggleButton, replayButton;
 let mic;
 let timer, time;
-const path = 'song.mp3';
 
 function toggleSong() {
 	if (song.isPlaying()) {
