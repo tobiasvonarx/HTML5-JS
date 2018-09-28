@@ -1,4 +1,6 @@
 let w, h;
+let margin = 20;
+
 let history = [];
 
 let a_slider, b_slider;
@@ -41,8 +43,8 @@ function draw() {
 		b = b_slider.value();
 	}
 
-	let x = w/4 * cos(a*t) + w/2;
-	let y = h/4 * sin(b*t) + h/2;
+	let x = (w/2*0.95) * cos(a*t) + w/2;
+	let y = (h/2*0.95) * sin(b*t) + h/2;
 
 	history.push(createVector(x, y));
 
