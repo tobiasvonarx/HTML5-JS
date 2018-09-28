@@ -20,11 +20,8 @@ Suggestions for improving my code quality would be appreciated greatly :)
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Demos%20for%20concepts/scrolling%20camera.html) | [Source](https://github.com/tobiasvonarx/HTML5-JS/blob/master/Demos%20for%20concepts/scrolling%20camera.html)
 ### Fractal tree
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Fractal%20Tree/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Fractal%20Tree)
-
 ### Lissajous Curve
-
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Lissajous%20Curve/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Lissajous%20Curve)
-
 ### Mandelbrot Fractal
 [Demo](https://tobiasvonarx.github.io/HTML5-JS/Mandelbrot%20Fractal/) | [Source](https://github.com/tobiasvonarx/HTML5-JS/tree/master/Mandelbrot%20Fractal)
 ### Matrix
