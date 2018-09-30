@@ -60,17 +60,15 @@ function draw() {
 
 		let rgba = `rgba(${r},${g},${b},${alpha})`;
 
-		//console.log(rgba);
-
 		stroke(rgba);
 		point(history[i].x, history[i].y);
+
+		red_off += 0.00001;
+		green_off += 0.00001;
+		blue_off += 0.00001;
 	}
 
 	//console.log(x, y);
-
-	red_off += 0.001;
-	green_off += 0.001;
-	blue_off += 0.001;
 
 	t+= 0.1/(a+b);
 }
