@@ -1,6 +1,8 @@
 function log(logWord, gen, text, num) {console.log("%c["+logWord+" "+gen+"]:  \t"+"%c"+text+"\t"+"%c"+num,"font-weight: bold; color: #2f2f2f;","font-weight: lighter;","color: #029d0d")};
 // Create the next generation
 function nextGeneration() {
+	saveCanvas(canvas, `generation ${generation}`, 'jpg');
+
 	if (debugLog) {
 		// log highscores of previous generation
 		log("Generation",generation, "highest fitness of generation", bestCurrentFitness);
@@ -23,7 +25,6 @@ function nextGeneration() {
 
 	foundNextGenCars = false;
 	bestCurrentFitness = 0;
-
 }
 
 // Generate a new population of cars
